@@ -133,11 +133,13 @@ export default class signup extends Component
             document.getElementById("error").style.display="none"
             
             //Calls the post method to retrive the token and validate username and password
-            axios.post('http://localhost:3001/user/signup', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+            axios.post('https://nhaservertest.herokuapp.com/user/signup', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
                 if (res.status === 200)
                 {
                     //We Store the token in local storage as well
                     localStorage.setItem("authToken", res.data.token)
+
+                    console.log(res.data.token)
 
                     this.setState({
                         redirectLogin: true

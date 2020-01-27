@@ -1,0 +1,168 @@
+.search_home_body
+{
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    overflow: auto;
+    background: #141414;
+}
+
+.Serach_home_container
+{
+    width: 100%;
+    height: 100%;
+}
+
+.serach_home_search_search
+{
+    width: 100%;
+    height:15%;
+}
+
+.serach_home_search_input
+{
+    width: 80%;
+    padding: 10px;
+    margin-left:9.5%;
+    margin-top: 2.5%;
+    margin-right: 9%;
+    margin-bottom: 2%;
+}
+
+.search_home_main_container
+{
+    width: 100%;
+    height: 100%;
+}
+
+.search_home_main_header
+{
+    width: 100%;
+    height: 60%;
+    display: flex;
+    background: cadetblue;
+
+}
+
+.search_home_main_header_left
+{
+    width: 100%;
+    height: 80%;
+    padding: 3%;
+}
+
+.main_header_left_content
+{
+    width: 50%;
+    max-height: 60%;
+}
+
+.main_header_left_button
+{
+    width: 20%;
+    padding: 10px;
+}
+
+.search_home_main_header_small
+{
+    width: 100%;
+    height: 40%;
+    display: flex;
+}
+
+.header_small_left
+{
+    width: 25%;
+    background: crimson;
+    padding: 2%;
+    -webkit-box-shadow: 6px 10px 29px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 6px 10px 29px 0px rgba(0,0,0,0.75);
+    box-shadow: 6px 10px 29px 0px rgba(0,0,0,0.75);
+}
+
+.header_small_middle
+{
+    width: 50%;
+    background: antiquewhite;
+    padding: 2%;
+    margin-right: .5%;
+    margin-left: .5%;
+    -webkit-box-shadow: 6px 10px 29px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 6px 10px 29px 0px rgba(0,0,0,0.75);
+    box-shadow: 6px 10px 29px 0px rgba(0,0,0,0.75);
+}
+
+.sideMenuBar
+{
+    display: flex;
+}
+
+.MainMenu
+{
+    width: 30%;
+    border-right: solid;
+    border-width: .5px;
+}
+
+.SubMenu
+{
+    width: 65%;
+    margin-left: 5%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.menuSubText
+{
+    margin-left: 10px;
+    margin-top: 0px;
+    margin-right: 10px;
+    margin-bottom: 0px;
+}
+.middle_content
+{
+    margin-right: .5%;
+}
+
+.secound_content
+{
+    margin-top: 3%;
+}
+.icon
+{
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+    color: black;
+    padding-bottom: 10px;
+    text-align: center;
+    border-bottom: solid;
+    border-width: .1px;
+}
+
+.icon:hover
+{
+    color: bisque;
+}
+
+.float_btn
+{
+    position: fixed;
+    background-color: rgba(41, 46, 38, 0.9);
+    background: rgba(41, 46, 38, 0.9);
+    color:white;    
+    border: none;
+    -webkit-box-shadow: 6px 10px 29px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 6px 10px 29px 0px rgba(0,0,0,0.75);
+    box-shadow: 6px 10px 29px 0px rgba(0,0,0,0.75);
+    margin-top: 10px;
+    margin-left: 10px;
+    padding: 8px;
+}
+
+.search
+{
+    margin-left: 59px;
+    width: 15%;
+    outline: none;
+}

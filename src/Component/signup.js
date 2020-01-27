@@ -10,25 +10,21 @@ var validator = require("email-validator");
 
 export default class signup extends Component 
 {
+    //Constructor
     constructor(prop)
     {
         super(prop)
 
         this.state = {
-            firstName:'',
-            lastName:'',
-            email:'',
-            password:'',
-            SecPassword:'',
+            firstName:'',              //User First Name
+            lastName:'',               //User Last Name
+            email:'',                  //User Email 
+            password:'',               //User Password
+            SecPassword:'',            //User password validation
 
-            error:null,
-
-            FnamevalidationFlag: true,
-            LnameValidationFlag:true,
-            EmailValidationFlag:true,
-            passwordValidationFlag:true,
+            error:null,                 //Server error
              
-            redirectLogin: false
+            redirectLogin: false        //Page Redirected
         }
     }
    

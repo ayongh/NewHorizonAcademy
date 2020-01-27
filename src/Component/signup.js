@@ -27,12 +27,6 @@ export default class signup extends Component
             redirectLogin: false        //Page Redirected
         }
     }
-   
-
-    componentDidMount()
-    {
-        this.validateToken()
-    }
     
     //Stores the value
     handleChange = (e) =>{

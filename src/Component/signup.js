@@ -31,7 +31,7 @@ export default class signup extends Component
 
     componentDidMount()
     {
-        //this.validateToken()
+        this.validateToken()
     }
     
     //Stores the value

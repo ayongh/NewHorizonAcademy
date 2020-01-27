@@ -53,7 +53,7 @@ export default class pswd_userID extends Component
 
             console.log(data)
             //Calls the post method to retrive the token and validate username and password
-            axios.post('http://localhost:3001/user/pswdReset', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+            axios.post(process.env.main_apiLink+'/user/pswdReset', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
                 
                 if(res.status === 200)
                 {

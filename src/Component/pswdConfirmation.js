@@ -68,7 +68,7 @@ export default class pswdConfirmation extends Component
             }
 
             //Calls the post method to retrive the token and validate username and password
-            axios.post('http://localhost:3001/user/pswdReset/confirmation', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+            axios.post(process.env.main_apiLink+'/user/pswdReset/confirmation', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
                 if(res.status === 200)
                 {
                    this.setState({

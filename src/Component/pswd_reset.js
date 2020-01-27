@@ -54,7 +54,7 @@ export default class pswd_reset extends Component
         {
             "password":this.state.Newpassword
         }
-        axios.post('http://localhost:3001/user/pswdReset/updatePswd', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+        axios.post(process.env.main_apiLink+'/user/pswdReset/updatePswd', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
 
             if(res.status === 200)
             {

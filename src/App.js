@@ -19,6 +19,7 @@ import UserID from './Component/pswd_userID';
 import SearchHome from './Component/serachHome';
 import Browse from './Component/browse';
 import PaswdConfirmation from './Component/pswdConfirmation';
+import SignupEmailValidation from './Component/signupEmailValidation'
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
         <Switch>
           <Route exact path="/signup">
             <Signup>Signup</Signup>
+          </Route>
+          <Route exact path="/signup/emailValidation">
+            <SignupEmailValidation>Signup</SignupEmailValidation>
           </Route>
 
           <Route  exact path="/passwordrest">

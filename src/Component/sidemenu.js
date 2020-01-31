@@ -1,7 +1,6 @@
 import React from "react";
 import Sidebar from "react-sidebar";
 import Icon from 'react-icons-kit';
-import {search } from 'react-icons-kit/fa';
 import {ic_sort} from 'react-icons-kit/md/ic_sort'
 import SearchHomeMain from './searchHomeMain'
 

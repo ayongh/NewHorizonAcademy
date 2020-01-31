@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Redirect } from 'react-router-dom'
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
+import SignupEmailValidation from './signupEmailValidation'
 
 var validator = require("email-validator");
+
 
 
 
@@ -22,9 +23,11 @@ export default class signup extends Component
             password:'',               //User Password
             SecPassword:'',            //User password validation
 
+            validationCode:'',
+
             error:null,                 //Server error
              
-            redirectLogin: false        //Page Redirected
+            redirectConfirmation: false        //Page Redirected
         }
     }
     
@@ -40,6 +43,54 @@ export default class signup extends Component
     {
         e.preventDefault();
 
+        this.formValidation()
+
+        if(this.state.firstName !== "" && this.state.lastName !== "" && this.state.email !== "" && validator.validate(this.state.email) === true && this.state.password !== "" && this.state.SecPassword !== "" && this.state.password === this.state.SecPassword )
+        {
+            var data  = {
+                "fname": this.state.firstName,
+                "lname": this.state.lastName,
+                "email" : this.state.email,
+                "password": this.state.password
+            }
+            
+            document.getElementById("error").style.display="none"
+            
+            axios.post('https://nhaservertest.herokuapp.com/user/signup/emailvarification', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+
+                if(res.status === 200)
+                {
+                    this.setState({
+                        password: res.data.password,
+                        validationCode: res.data.secret,
+                        redirectConfirmation : true
+                    })
+                }
+                else if(res.status === 403)
+                {
+                    this.setState({
+                        error: res.data.errors
+                    })
+                }
+                else
+                {
+                    this.setState({error: [{"value": "","msg": "Error Occured when performing a http request","param": "request","location": "body"}]})
+                }
+
+           
+            }).catch(err =>{
+                this.setState({ error: [{"value": "","msg": "Internal Error occure","param": "request","location": "body"}]})
+            })
+            
+        } 
+        else
+        {
+            document.getElementById("error").style.display="flex"
+        }//if
+    }
+
+    formValidation()
+    {
         //First Name validation
         if(this.state.firstName === "")
         {
@@ -108,65 +159,14 @@ export default class signup extends Component
         {
             document.getElementById('SecPassword').style.borderColor = "black";
             document.getElementById('SecPassword').style.borderWidth = "1px";
+            document.getElementById('secPass').style.display = "none"
         }
-
-
-        if(this.state.firstName !== "" && this.state.lastName !== "" && this.state.email !== "" && validator.validate(this.state.email) === true && this.state.password !== "" && this.state.SecPassword !== "" && this.state.password === this.state.SecPassword )
-        {
-            var data  = {
-                "fname": this.state.firstName,
-                "lname": this.state.lastName,
-                "email" : this.state.email,
-                "password": this.state.password
-            }
-            
-            document.getElementById("error").style.display="none"
-            
-            //Calls the post method to retrive the token and validate username and password
-            axios.post('https://nhaservertest.herokuapp.com/user/signup', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
-                if (res.status === 200)
-                {
-                    //We Store the token in local storage as well
-                    localStorage.setItem("authToken", res.data.token)
-
-                    console.log(res.data.token)
-
-                    this.setState({
-                        redirectLogin: true
-                    })
-                }
-                else if(res.status === 403)
-                {
-                    this.setState({
-                        error: res.data.errors
-                    })
-                }
-                else
-                {
-                    this.setState({
-                        error: res.data
-                    })
-                }
-            }). catch(err =>{
-                //we change the login state to false is we have an error
-                this.setState({
-                    flagLogin: false,
-                })
-            })// catch error
-            
-        } 
-        else
-        {
-            document.getElementById("error").style.display="flex"
-        }//if
     }
-
     render() 
     {
         const errorMSG = this.state.error
         let errorMessage;
     
-
         if (errorMSG !== null)
         {
             errorMessage = errorMSG.map((ErrMSG, i)=>
@@ -178,9 +178,10 @@ export default class signup extends Component
             errorMessage = ''
         }
 
-        if(this.state.redirectLogin === true)
+        if(this.state.redirectConfirmation === true)
         {
-           return <Redirect to="/"></Redirect>
+           
+           return <SignupEmailValidation firstName={this.state.firstName} lastName={this.state.lastName} email={this.state.email} password={this.state.password} validationCode={this.state.validationCode} />
         }
 
         return (

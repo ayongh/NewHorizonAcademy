@@ -1,43 +1,46 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
-import ReactDOM from 'react-dom';
 import Modal from 'react-responsive-modal';
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
 
 export default class pswdConfirmation extends Component 
 {
+    // Avoids memory leaks when using the time interval async function
     _isMounted = false;
 
+    //Constructor
     constructor(prop)
     {
         super(prop)
 
         this.state = {
-            confirmationCode:'',
-            error:null,
-            modelopen:false,
-            redirectpreviousPage: false,
+            confirmationCode:'',               //Stores conformation Code inputed by user
+            error:null,                        // Stores error retrived from api
+            modelopen:false,                   // Open the model if the token expires
+            redirectpreviousPage: false,       // if the validation or time expires the flage indicates if we should roll to previous page 
 
-            open: false,
+            open: false,                        //The flag value that opens and closes the POP UP 
              
-            redirectNextPage: false,
+            redirectNextPage: false,            // if everything validates flag indicates if we should move to resting password to next page
 
-            minute:4,
+            minute:4,                           // Timer value until token expires 
             sec:60
         }
     }
 
+    //Function changes the STATE of open flage to true - which will open popup
     onOpenModal = () => {
         this.setState({ open: true });
     };
 
+    //Function changes the STATE of open flage to false - which will close popup
     onCloseModal = () => {
         this.setState({ open: false, redirectpreviousPage:true});
     };
 
-    //Stores the value
+    //Stores the value on inpute change of value and stores it in inpute ID
     handleChange = (e) =>{
         this.setState({
             [e.target.id]: e.target.value
@@ -45,11 +48,58 @@ export default class pswdConfirmation extends Component
 
     }
     
+    //upon submit of the button following thing will occure
     submit = (e)=>
     {
+        //prevents the submit from moving to next page
         e.preventDefault();
-        console.log(this.state)
 
+        //Validates the form inpute is null or not
+        this.formValidation()
+       
+        //if the form inputes are not null we call the axios request
+        if(this.state.userName !== "")
+        {
+            var data = {
+                "authCode": this.state.confirmationCode
+            }
+
+            //Calls the post method to validate if the confirmation matches or not
+            axios.post('https://nhaservertest.herokuapp.com/user/pswdReset/confirmation', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+                
+                //if we get success the we move to next page
+                if(res.status === 200)
+                {
+                   this.setState({
+                     redirectNextPage: true
+                   })
+                }
+                //if we get 404 the valudation doesnt match  
+                else if(res.status === 404)
+                {
+                    this.setState({
+                        error: res.data.error
+                    })
+                }
+                //finally if something else hapens it will open the POP up box
+                else
+                {
+                    this.onOpenModal()
+                }
+
+            }).catch(err =>{
+                //if there is an error in AXIOS request we catch error 
+                this.setState({
+                    error: "Internal Error occured"
+                })
+            })// catch error
+
+        }// if     
+        
+    } //submit
+
+    formValidation()
+    {
         if(this.state.userName === "")
         {
             document.getElementById('confirmationCode').style.borderColor = "red";
@@ -60,43 +110,9 @@ export default class pswdConfirmation extends Component
             document.getElementById('confirmationCode').style.borderColor = "black";
             document.getElementById('confirmationCode').style.borderWidth = "1px";
         }
-
-        if(this.state.userName !== "")
-        {
-            var data = {
-                "authCode": this.state.confirmationCode
-            }
-
-            //Calls the post method to retrive the token and validate username and password
-            axios.post('https://nhaservertest.herokuapp.com/user/pswdReset/confirmation', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
-                if(res.status === 200)
-                {
-                   this.setState({
-                     redirectNextPage: true
-                   })
-                }
-                else if(res.status === 404)
-                {
-                    this.setState({
-                        error: res.data.error
-                    })
-                }
-                else
-                {
-                    this.onOpenModal()
-                }
-
-            }). catch(err =>{
-                //we change the login state to false is we have an error
-                this.setState({
-                    error: "Internal Error occured"
-                })
-            })// catch error
-
-        }        
-        
     }
 
+    //clock that display when token will expire
     componentDidMount() {
         this.countdown()
     }
@@ -139,9 +155,10 @@ export default class pswdConfirmation extends Component
                     }
                 }
             }, 1000);
-        }
-    }
+        }//if
+    }//countDown
 
+    //prevents from memory leak
     componentWillUnmount()
     {
         this._isMounted = false;
@@ -149,18 +166,22 @@ export default class pswdConfirmation extends Component
 
     render() 
     {
+        //POP up flage that indicates weither it should open pop up or not
         const { open } = this.state;
 
+        //Previous page flag Redirection
         if(this.state.redirectpreviousPage === true)
         {
             return <Redirect to="/userid"></Redirect>
         }
         
+        //Next page flage Redirection
         if(this.state.redirectNextPage === true)
         {
             return <Redirect to="/passwordrest"></Redirect>
         }
 
+        //Error display 
         const Notfounderr = this.state.error ;
         let err;
         if( Notfounderr !== null)
@@ -221,7 +242,7 @@ export default class pswdConfirmation extends Component
 
                 <Modal open={open} onClose={this.onCloseModal} center style={{color:"red", textAlign:"center"}}>
                     <h2 style={{color:"red", width:"100%", textAlign:"center"}}>Code Expired</h2>
-                    <p style={{color:"red", width:"100%", textAlign:"center"}}><Icon icon={close}></Icon>The code sent to your email has expired please restart again</p>
+                    <p style={{color:"red", width:"100%", textAlign:"center"}}>The code sent to your email has expired process will restart again</p>
                 </Modal>
 
             </div>

@@ -118,8 +118,7 @@ export default class Login extends Component
     //validates if the local token and cookie token is same and also checks if token has expired
     validateToken()
     {
-        axios.post('https://nhaservertest.herokuapp.com/token/validation', {"localtoken":localStorage.getItem('authToken')}, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; 
-        }}).then( res =>{
+        axios.post('https://nhaservertest.herokuapp.com/token/validation', {"localtoken":localStorage.getItem('authToken')}, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
 
             if(res.status === 200)
             {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
-import ReactDOM from 'react-dom';
 import Modal from 'react-responsive-modal';
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
@@ -17,14 +16,12 @@ export default class pswd_reset extends Component
             Varifypassword:'',
 
             handlederror:null,
-
             Servererrors: null,
 
             callUpdateRoute: true,
-
             modelopen:false,
-
             open: false,
+            redirectLoginpage:false
         }
     }
 
@@ -33,6 +30,9 @@ export default class pswd_reset extends Component
         this.setState({
             [e.target.id]: e.target.value
         })
+
+        console.log(process.env.main_apiLink)
+
 
     }
     
@@ -58,7 +58,7 @@ export default class pswd_reset extends Component
 
             if(res.status === 200)
             {
-
+                this.onOpenModal()
             }
             else if( res.status === 403)
             {
@@ -72,15 +72,13 @@ export default class pswd_reset extends Component
                     handlederror: res.data.error
                 })
             }
-        }). catch(err =>{
+        }).catch(err =>{
             //we change the login state to false is we have an error
             this.setState({
                 handlederror: "Internal Error occured"
             })
         })// catch error
     }
-
-    //$2a$10$mAUm6r0K/Nqt4CgYZ2u3z.iHkVCfdN2c3ycQpnJ0fj3KV0PfPPR0u
 
     verification()
     {
@@ -133,8 +131,23 @@ export default class pswd_reset extends Component
         }
 
     }
+
+    onOpenModal = () => {
+        this.setState({ open: true });
+    };
+
+    onCloseModal = () => {
+        this.setState({ open: false, redirectLoginpage:true});
+    };
+
     render() 
     {
+        const { open } = this.state;
+
+        if(this.state.redirectLoginpage === true)
+        {
+            return <Redirect to="/"></Redirect>
+        }
 
         const Notfounderr = this.state.handlederror ;
         let err;
@@ -183,6 +196,11 @@ export default class pswd_reset extends Component
                     </div>
                     
                 </div>
+
+                <Modal open={open} onClose={this.onCloseModal} center style={{color:"red", textAlign:"center"}}>
+                    <h2 style={{color:"green", width:"100%", textAlign:"center"}}>Password Updtaed</h2>
+                    <p style={{color:"green", width:"100%", textAlign:"center"}}>your password was successfully updated. we now will redirect you to login page</p>
+                </Modal>
             </div>
         )
     }

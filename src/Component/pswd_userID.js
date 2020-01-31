@@ -51,7 +51,6 @@ export default class pswd_userID extends Component
                 "email": this.state.userName
             }
 
-            console.log(data)
             //Calls the post method to retrive the token and validate username and password
             axios.post('https://nhaservertest.herokuapp.com/user/pswdReset', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
                 
@@ -86,7 +85,7 @@ export default class pswd_userID extends Component
                     })
                 }
 
-            }). catch(err =>{
+            }).catch(err =>{
                 //we change the login state to false is we have an error
                 this.setState({
                     NotFoundError: "Internal Error occured"

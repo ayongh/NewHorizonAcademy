@@ -106,7 +106,7 @@ export default class signupEmailValidation extends Component
     {    
         if(this.state.redirectlogin === true)
         {
-            //return <Redirect to="/"/>
+            return <Redirect to="/"/>
         }
 
         //multiple errors from server

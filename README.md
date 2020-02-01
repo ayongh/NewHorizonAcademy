@@ -69,9 +69,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
->>>>>>> password Reset Complete
 
-echo "# NewHorizonAcademy" >> README.md
+## Github Instruction To initalized and push
 git init
 git add README.md
 git commit -m "first commit"

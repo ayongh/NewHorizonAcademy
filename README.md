@@ -75,6 +75,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 * git add README.md
 * git commit -m "first commit"
 * git remote add origin https://github.com/ayongh/NewHorizonAcademy.git or
-** git remote set-url origin https://github.com/ayongh/NewHorizonAcademy.git
+* git remote set-url origin https://github.com/ayongh/NewHorizonAcademy.git
 * git push -u origin master
 

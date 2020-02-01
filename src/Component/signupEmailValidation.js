@@ -160,7 +160,7 @@ export default class signupEmailValidation extends Component
                             <h2>Sign Up</h2>
                             <form onSubmit={this.handleSubmit}>
                                 <div className="signup_signup_right_inner_container_elem">
-                                    <label>First Name</label>
+                                    <label>Validation Code</label>
                                     <input id="userVerificationCode" onChange={this.handleChange}  className="txt" type="text" placeholder="AXCHE12V"></input>
                                 </div>
                                 {errorMessage}

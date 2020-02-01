@@ -22,7 +22,11 @@ export default class Login extends Component
 
     componentDidMount()
     {
-        this.validateToken()
+        const localToken =localStorage.getItem('authToken')
+        if(localToken !== undefined)
+        {
+            this.validateToken()
+        }
     }
     
     //Stores the value

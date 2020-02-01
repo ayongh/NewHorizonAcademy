@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # NewHorrizonAccademy
 React client side code
 =======
@@ -71,3 +70,11 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 >>>>>>> password Reset Complete
+
+echo "# NewHorizonAcademy" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/ayongh/NewHorizonAcademy.git
+git push -u origin master
+

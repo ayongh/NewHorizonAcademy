@@ -165,48 +165,53 @@ export default class Login extends Component
         {
             return <MainComponent/>
         }
-        
-        //if the token is invalid the login page is loaded
-        return (
+        else
+        {
 
-            <div className="login_body">
-                <div className="login_left">
-                    <div className="login_left_outer_container">
-                        <h3>Create New User</h3>
-                        <label>If you dont have a user name and password created please 
-                            do so now by clicking the button below. Thank you!
-                        </label>
-                        <a href="/signup">
-                            <button type="button" className="signup btn" href="/signup">Sign up</button>
-                        </a>
-                    </div>
-                </div>
+            //if the token is invalid the login page is loaded
+            return (
 
-                <div className="login_right">
-                    <div className="login_right_outer_container">
-                        <div className="login_right_inner_container">
-                            <h2>Login</h2>
-
-                            <form onSubmit={this.handleSubmit}>
-                                <div className="login_login_right_inner_container_elem">
-                                    <label className="login_label">User Name</label>
-                                    <input id="username" onChange={this.handleChange} className="txt" type="text" placeholder="User Name"></input>
-                                </div>
-                                
-                                <div className="login_login_right_inner_container_elem">
-                                    <label className="login_label">password</label>
-                                    <input id="password" onChange={this.handleChange} className="txt" type="password" placeholder="password"></input>
-                                </div>
-                                {errorAlert}
-                                <button id="submit_btn" className="btn" type="submit">Login</button>
-                            </form>
-                            
-                            <p> I forgot my <a href="\userid">password</a></p>
+                <div className="login_body">
+                    <div className="login_left">
+                        <div className="login_left_outer_container">
+                            <h3>Create New User</h3>
+                            <label>If you dont have a user name and password created please 
+                                do so now by clicking the button below. Thank you!
+                            </label>
+                            <a href="/signup">
+                                <button type="button" className="signup btn" href="/signup">Sign up</button>
+                            </a>
                         </div>
                     </div>
-                    
+
+                    <div className="login_right">
+                        <div className="login_right_outer_container">
+                            <div className="login_right_inner_container">
+                                <h2>Login</h2>
+
+                                <form onSubmit={this.handleSubmit}>
+                                    <div className="login_login_right_inner_container_elem">
+                                        <label className="login_label">User Name</label>
+                                        <input id="username" onChange={this.handleChange} className="txt" type="text" placeholder="User Name"></input>
+                                    </div>
+                                    
+                                    <div className="login_login_right_inner_container_elem">
+                                        <label className="login_label">password</label>
+                                        <input id="password" onChange={this.handleChange} className="txt" type="password" placeholder="password"></input>
+                                    </div>
+                                    {errorAlert}
+                                    <button id="submit_btn" className="btn" type="submit">Login</button>
+                                </form>
+                                
+                                <p> I forgot my <a href="\userid">password</a></p>
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        }
+        
+       
     }
 }

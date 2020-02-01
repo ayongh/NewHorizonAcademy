@@ -19,9 +19,11 @@ export default class Login extends Component
         }
     }
    
-
+    //When the page first enters this function is called
     componentDidMount()
     {
+        this.validateToken()
+
         const localToken =localStorage.getItem('authToken')
         if(localToken !== undefined)
         {
@@ -29,7 +31,7 @@ export default class Login extends Component
         }
     }
     
-    //Stores the value
+    //Stores the value when change in inpute filed occures
     handleChange = (e) =>{
         this.setState({
             [e.target.id]: e.target.value

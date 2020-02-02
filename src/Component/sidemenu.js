@@ -26,44 +26,22 @@ class sidemenu extends React.Component {
         sidebar=
         {
         <div className="sideMenuBar">
-            <div className="MainMenu">
-              <h5>Movie</h5>
-              <h5>Show</h5>
-              <h5>Anime</h5>
-              <h5>Stand up</h5>
-            </div>
+          <div className="MainMenu">
+            <h5>Movie</h5>
+            <h5>Show</h5>
+            <h5>Anime</h5>
+            <h5>Stand up</h5>
+          </div>
 
-            <div className="SubMenu">
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-              <p className="menuSubText">Apple</p>
-            </div>
-            
+          <div className="SubMenu">
+            <p className="menuSubText">Apple</p>
+            <p className="menuSubText">Apple</p>
+            <p className="menuSubText">Apple</p>
+            <p className="menuSubText">Apple</p>
+            <p className="menuSubText">Apple</p>
+            <p className="menuSubText">Apple</p>
+            <p className="menuSubText">Apple</p>
+          </div>
 
         </div>
         }

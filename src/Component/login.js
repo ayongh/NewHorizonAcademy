@@ -3,7 +3,6 @@ import axios from 'axios'
 import MainComponent from './sidemenu'
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
-import {ic_sort} from 'react-icons-kit/md/ic_sort'
 import Loading from './loading'
 
 export default class Login extends Component 
@@ -18,28 +17,10 @@ export default class Login extends Component
             loading:true,
 
             flagLogin:false,
-            count: 0,
             error:null
         }//state
     }//constructor
    
-    //When the page first enters this function is called
-    componentDidMount()
-    {
-
-        setTimeout(() =>
-        {
-            this.setState({loading:false})
-
-        }, 2000);
-
-        const localToken =localStorage.getItem('authToken')
-        if(localToken !== null)
-        {
-            this.validateToken()
-        }// Token
-    }//ComponentDidMount
-    
     //Stores the value when change in inpute filed occures
     handleChange = (e) =>{
         this.setState({
@@ -63,7 +44,7 @@ export default class Login extends Component
             }
 
             //Calls the post method to retrive the token and validate username and password
-            axios.post('https://nhaservertest.herokuapp.com/user/login', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+            axios.post('http://localhost:3001/user/login', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
 
                 if(res.status === 200)
                 {
@@ -133,34 +114,6 @@ export default class Login extends Component
 
     }//formValidation
 
-    //validates if the local token and cookie token is same and also checks if token has expired
-    validateToken()
-    {
-        axios.post('https://nhaservertest.herokuapp.com/token/validation', {"localtoken":localStorage.getItem('authToken')}, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
-
-            if(res.status === 200)
-            {
-                this.setState({
-                    flagLogin: true,
-                })
-            }
-            else
-            {
-                this.setState({
-                    flagLogin: false,
-                })
-                
-            }
-
-           
-        }).catch(err =>{
-            this.setState({
-                flagLogin: false,
-            })
-        })
-
-    }
-
     render() 
     {
         
@@ -172,62 +125,47 @@ export default class Login extends Component
             errorAlert = <p style={{color:"red"}}> <Icon icon={close}></Icon>{error}</p>
         }
 
-        //if the token matches and validates the Main page is loaded
-        if(this.state.flagLogin)
-        {
-            return <MainComponent/>
-        }
-        else
-        {
-            if(!this.state.loading)
-            {//if the token is invalid the login page is loaded
-                return (
+        
+        return (
 
-                    <div className="login_body">
-                        <div className="login_left">
-                            <div className="login_left_outer_container">
-                                <h3>Create New User</h3>
-                                <label>If you dont have a user name and password created please 
-                                    do so now by clicking the button below. Thank you!
-                                </label>
-                                <a href="/signup">
-                                    <button type="button" className="signup btn" href="/signup">Sign up</button>
-                                </a>
-                            </div>
-                        </div>
+            <div className="login_body">
+                <div className="login_left">
+                    <div className="login_left_outer_container">
+                        <h3>Create New User</h3>
+                        <label>If you dont have a user name and password created please 
+                            do so now by clicking the button below. Thank you!
+                        </label>
+                        <a href="/signup">
+                            <button type="button" className="signup btn" href="/signup">Sign up</button>
+                        </a>
+                    </div>
+                </div>
 
-                        <div className="login_right">
-                            <div className="login_right_outer_container">
-                                <div className="login_right_inner_container">
-                                    <h2>Login</h2>
+                <div className="login_right">
+                    <div className="login_right_outer_container">
+                        <div className="login_right_inner_container">
+                            <h2>Login</h2>
 
-                                    <form onSubmit={this.handleSubmit}>
-                                        <div className="login_login_right_inner_container_elem">
-                                            <label className="login_label">User Name</label>
-                                            <input id="username" onChange={this.handleChange} className="txt" type="text" placeholder="User Name"></input>
-                                        </div>
-                                        
-                                        <div className="login_login_right_inner_container_elem">
-                                            <label className="login_label">password</label>
-                                            <input id="password" onChange={this.handleChange} className="txt" type="password" placeholder="password"></input>
-                                        </div>
-                                        {errorAlert}
-                                        <button id="submit_btn" className="btn" type="submit">Login</button>
-                                    </form>
-                                    
-                                    <p> I forgot my <a href="\userid">password</a></p>
+                            <form onSubmit={this.handleSubmit}>
+                                <div className="login_login_right_inner_container_elem">
+                                    <label className="login_label">User Name</label>
+                                    <input id="username" onChange={this.handleChange} className="txt" type="text" placeholder="User Name"></input>
                                 </div>
-                            </div>
+                                
+                                <div className="login_login_right_inner_container_elem">
+                                    <label className="login_label">password</label>
+                                    <input id="password" onChange={this.handleChange} className="txt" type="password" placeholder="password"></input>
+                                </div>
+                                {errorAlert}
+                                <button id="submit_btn" className="btn" type="submit">Login</button>
+                            </form>
                             
+                            <p> I forgot my <a href="\userid">password</a></p>
                         </div>
                     </div>
-                )//return
-            }else
-            {
-                return <Loading></Loading>
-            }
-
-        } //else
-        
+                    
+                </div>
+            </div>
+        )//return
     }
 }

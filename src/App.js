@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
+import {Actionlogin, ActionLoading, ActionError} from './Action/loginAction'
+import {authDispatch} from './DispatchAction/loginDispatch'
+import {
+  BrowserRouter,
+  Redirect,
+  Switch,
+  Route
+} from "react-router-dom";
+import {connect} from 'react-redux'
+
 import './App.css';
 import './Component/CSS/login.css';
 import './Component/CSS/signup.css';
 import './Component/CSS/searchHome.css';
 import './Component/CSS/pswd_rest.css';
-
-
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Switch,
-  Route
-} from "react-router-dom";
 import Login from './Component/login';
 import Signup from './Component/signup';
 import PasswordReset from './Component/pswd_reset';
@@ -21,6 +23,8 @@ import SearchHome from './Component/serachHome';
 import PaswdConfirmation from './Component/pswdConfirmation';
 import SignupEmailValidation from './Component/signupEmailValidation'
 import Browse from './Component/browse'
+import Loading from './Component/loading'
+
 
 //protected
 const ProtectedRoute = ({ component: Comp, loggedIn,validlogin, path, ...rest }) => {
@@ -29,7 +33,6 @@ const ProtectedRoute = ({ component: Comp, loggedIn,validlogin, path, ...rest })
       path={path}
       {...rest}
       render={(props) => {
-
         if(loggedIn)
         {
           return <Comp {...props}/>
@@ -38,7 +41,7 @@ const ProtectedRoute = ({ component: Comp, loggedIn,validlogin, path, ...rest })
         {
           if(path=== "/pswdreset/NewPswd" || path==="/pswdreset/ConfirmationCode")
           {
-            return <Redirect to={{pathname: "/pswdreset", state: {prevLocation: path, error: "You need to login first!"}}}/>
+            return <Redirect to={{pathname: "/pswdreset", state: {prevLocation: path, route: "You need to login first!"}}}/>
           }
           else if(path === "/signup/emailValidation")
           {
@@ -55,46 +58,49 @@ const ProtectedRoute = ({ component: Comp, loggedIn,validlogin, path, ...rest })
 
 class App extends Component
 {
-
-  state = {
-    loggedIn: false,
-  };
-
-  
+  componentDidMount()
+  {
+    authDispatch(this.props)
+  }
 
   render()
   {
-    return (
+    if(this.props.state.login.loading)
+    {
+      return <Loading/>
+    }
+    else
+    {
+      return (
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/signup" component={Signup}/>
+            <ProtectedRoute exact path="/signup/emailValidation" loggedIn={this.props.state.loginFlag} component={SignupEmailValidation}/>
+
+
+            <Route  exact path="/pswdreset" component={UserID}/>
+            <ProtectedRoute  exact path="/pswdreset/NewPswd" loggedIn={this.props.state.loginFlag} component={PasswordReset}/>         
+            <ProtectedRoute  exact path="/pswdreset/ConfirmationCode" loggedIn={this.props.state.loginFlag} component={PaswdConfirmation}/>
       
-      <Switch>
 
-        <Route exact path="/signup" component={Signup}/>
-        
-        <ProtectedRoute exact path="/signup/emailValidation" loggedIn={this.state.loggedIn} component={SignupEmailValidation}/>
+            <Route  exact path="/" component={Login}/>
+            <ProtectedRoute exact path="/browse" loggedIn={this.props.state.login.loginFlag} component={Browse}/>
+            <ProtectedRoute exact path="/Homepage" loggedIn={this.props.state.login.loginFlag} component={SearchHome}/>
 
+            <Route component={Filenotfound}/>
+              
+          </Switch>
+        </BrowserRouter>
 
-        <Route  exact path="/pswdreset" component={UserID}/>
-
-        <ProtectedRoute  exact path="/pswdreset/NewPswd" loggedIn={this.state.loggedIn} component={PasswordReset}/>
-        
-        <ProtectedRoute  exact path="/pswdreset/ConfirmationCode" loggedIn={this.state.loggedIn} component={PaswdConfirmation}/>
-  
-
-
-        <Route  exact path="/" component={Login}/>
-
-        <ProtectedRoute exact path="/browse" loggedIn={this.state.loggedIn} component={Browse}/>
-
-        <ProtectedRoute exact path="/Homepage" loggedIn={this.state.loggedIn} component={SearchHome}/>
-
-
-        <Route>
-          <Filenotfound/>
-        </Route>
-      
-      </Switch>
-    );
+      );
+    }
   }
 }
 
-export default App;
+const mapToState = (state) =>{
+  return {
+    state:state
+  }
+}
+
+export default connect(mapToState, {Actionlogin, ActionLoading, ActionError}) (App);

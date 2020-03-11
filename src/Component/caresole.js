@@ -57,81 +57,13 @@ export default class caresole extends Component
                 <h2 className="CaresoleCategorie">{this.props.categorie}</h2>
                 <div className="caresoleWrapper">
                     <div className="contentWraper" onClick={() => this.openModel("id")}>
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
                         <h3>Title of the movie</h3>
                     </div>
                     <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
                         <h3>Title of the movie</h3>
                     </div>
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-
-                    <div className="contentWraper">
-                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                        <h3>Title of the movie</h3>
-                    </div>
-
-
                 </div>
                 <Modal open={open} onClose={this.onCloseModal} center style={{color:"white", width:"80vw",height:"80vh"}}>
                     <div className="popUp_img_container">
@@ -140,7 +72,7 @@ export default class caresole extends Component
                         </div>
 
                         <div className="popup_image">
-                            <img className="caresole_pop_Image" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
+                            <img className="caresole_pop_Image" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
                             <div className="caresole_popup_container">
                                 <h1>Title of the Movie</h1>
                                 <p className="popup_description">Fiction-writing also has modes: action, exposition, description, dialogue, summary, and transition.
@@ -166,32 +98,32 @@ export default class caresole extends Component
                         <div className="popupSectionContent">
                             <section id="section">
                                 <div className="contentWraper">
-                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
+                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
                                     <h3>section</h3>
                                 </div>
                                 <div className="contentWraper">
-                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
+                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
                                     <h3>section</h3>
                                 </div>
                                 <div className="contentWraper">
-                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
-                                    <h3>section</h3>
-                                </div>
-
-                                <div className="contentWraper">
-                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
+                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
                                     <h3>section</h3>
                                 </div>
 
                                 <div className="contentWraper">
-                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
+                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                                    <h3>section</h3>
+                                </div>
+
+                                <div className="contentWraper">
+                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
                                     <h3>section</h3>
                                 </div>
                             </section>
 
                             <section id="similar">
                                 <div className="contentWraper">
-                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"/>
+                                    <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
                                     <h3>Similar</h3>
                                 </div>
                             </section>

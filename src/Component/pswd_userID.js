@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
+import {API_URL} from '../globalVariable'
 
 export default class pswd_userID extends Component 
 {
@@ -52,7 +53,7 @@ export default class pswd_userID extends Component
             }
 
             //Calls the post method to retrive the token and validate username and password
-            axios.post('https://nhaservertest.herokuapp.com/user/pswdReset', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+            axios.post(API_URL+'/user/pswdReset', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
                 
                 if(res.status === 200)
                 {
@@ -127,7 +128,8 @@ export default class pswd_userID extends Component
        
         if(this.state.redirectNextPage === true)
         {
-           return <Redirect to="/passwordConfirmation"/>
+            alert("hi")
+           return <Redirect to="/pswdreset/ConfirmationCode"/>
         }
 
         return (

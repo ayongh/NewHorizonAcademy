@@ -86,18 +86,17 @@ class login extends Component
 
         const route = this.props.location.state
        
-            if(this.props.state.login.loginFlag)
+        if(this.props.state.login.loginFlag)
+        {
+            if(route !== undefined)
             {
-                if(route !== undefined)
-                {
-                    return <Redirect to= {route.prevLocation}/>
-                }
-                else
-                {
-                    return <Redirect to= "/Homepage"/>
-
-                }   
+                return <Redirect to= {route.prevLocation}/>
             }
+            else
+            {
+                return <Redirect to= "/Homepage"/>
+            }   
+        }
             
 
         return (

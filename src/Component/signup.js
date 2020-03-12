@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
 import SignupEmailValidation from './signupEmailValidation'
+import {API_URL} from '../globalVariable'
 
 var validator = require("email-validator");
 
@@ -56,7 +57,7 @@ export default class signup extends Component
             
             document.getElementById("error").style.display="none"
             
-            axios.post('https://nhaservertest.herokuapp.com/user/signup/emailvarification', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+            axios.post(API_URL+'/user/signup/emailvarification', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
 
                 if(res.status === 200)
                 {

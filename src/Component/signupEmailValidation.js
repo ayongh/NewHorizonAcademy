@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
+import {API_URL} from '../globalVariable'
 
 
 
@@ -50,7 +51,7 @@ export default class signupEmailValidation extends Component
                 "userInputedCode":this.state.userVerificationCode
             }
 
-            axios.post('https://nhaservertest.herokuapp.com/user/signup', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+            axios.post(API_URL+'/user/signup', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
                 
                 console.log(res.data)
 

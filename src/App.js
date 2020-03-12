@@ -24,6 +24,7 @@ import PaswdConfirmation from './Component/pswdConfirmation';
 import SignupEmailValidation from './Component/signupEmailValidation'
 import Browse from './Component/browse'
 import Loading from './Component/loading'
+import NoInternet from './Component/noInternet'
 
 
 //protected
@@ -75,6 +76,8 @@ class App extends Component
         <BrowserRouter>
           <Switch>
             <Route exact path="/signup" component={Signup}/>
+            <Route exact path="/noIternet" component={PaswdConfirmation}/>
+
             <ProtectedRoute exact path="/signup/emailValidation" loggedIn={this.props.state.loginFlag} component={SignupEmailValidation}/>
 
 
@@ -88,10 +91,8 @@ class App extends Component
             <ProtectedRoute exact path="/Homepage" loggedIn={this.props.state.login.loginFlag} component={SearchHome}/>
 
             <Route component={Filenotfound}/>
-              
           </Switch>
         </BrowserRouter>
-
       );
     }
   }

@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import Modal from 'react-responsive-modal';
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
+import {API_URL} from '../globalVariable'
 
 export default class pswd_reset extends Component 
 {
@@ -54,7 +55,7 @@ export default class pswd_reset extends Component
         {
             "password":this.state.Newpassword
         }
-        axios.post('https://nhaservertest.herokuapp.com/user/pswdReset/updatePswd', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+        axios.post(API_URL+'/user/pswdReset/updatePswd', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
 
             if(res.status === 200)
             {

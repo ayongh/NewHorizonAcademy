@@ -1,8 +1,7 @@
 import {connect} from 'react-redux'
-import React, { Component } from 'react';
 import axios from 'axios'
 import {API_URL} from '../globalVariable'
-import {Redirect} from 'react-router-dom'
+import Cookies from 'js-cookie';
 
 export function loginDispatch(payload, props)
 {
@@ -33,7 +32,6 @@ export function loginDispatch(payload, props)
 export async function authDispatch( props)
 {
     props.ActionLoading()    
-
     try {
         await axios.get(API_URL+'/token/validation',{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then(res=>{
             if(res.status===200)
@@ -51,6 +49,7 @@ export async function authDispatch( props)
     
     
 }
+  
 
 //access all the state
 const mapToState = (state) =>{

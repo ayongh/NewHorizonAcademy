@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
 import {API_URL} from '../globalVariable'
+import PaswdConfirmation from './pswdConfirmation'
 
 export default class pswd_userID extends Component 
 {
@@ -31,7 +32,6 @@ export default class pswd_userID extends Component
     submit = (e)=>
     {
         e.preventDefault();
-        console.log(this.state)
 
         if(this.state.userName === "")
         {
@@ -54,12 +54,11 @@ export default class pswd_userID extends Component
 
             //Calls the post method to retrive the token and validate username and password
             axios.post(API_URL+'/user/pswdReset', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
-                
+                console.log(res.data)
                 if(res.status === 200)
                 {
                    this.setState({
                         redirectNextPage: true,
-
                     })
                 }
                 else if(res.status === 403)
@@ -128,8 +127,7 @@ export default class pswd_userID extends Component
        
         if(this.state.redirectNextPage === true)
         {
-            alert("hi")
-           return <Redirect to="/pswdreset/ConfirmationCode"/>
+           return  <PaswdConfirmation/>
         }
 
         return (

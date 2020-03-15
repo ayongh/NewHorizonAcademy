@@ -8,8 +8,6 @@ import {Link, Redirect} from 'react-router-dom'
 import {Actionlogin, ActionLoading, ActionError} from '../Action/loginAction'
 import {loginDispatch} from '../DispatchAction/loginDispatch'
 
-import Loading from './loading'
-
 class login extends Component
 {
     constructor(props)
@@ -86,6 +84,8 @@ class login extends Component
 
         const route = this.props.location.state
        
+        console.log(this.props)
+
         if(this.props.state.login.loginFlag)
         {
             if(route !== undefined)

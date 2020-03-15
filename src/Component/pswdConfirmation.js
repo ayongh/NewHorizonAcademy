@@ -4,8 +4,14 @@ import { Redirect } from 'react-router-dom'
 import Modal from 'react-responsive-modal';
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
+import {Actionlogin, ActionLoading, ActionError} from '../Action/loginAction'
+import {connect} from 'react-redux'
+import {API_URL} from '../globalVariable'
+import PassworReset from './pswd_reset'
 
-export default class pswdConfirmation extends Component 
+
+
+class pswdConfirmation extends Component 
 {
     // Avoids memory leaks when using the time interval async function
     _isMounted = false;
@@ -65,7 +71,7 @@ export default class pswdConfirmation extends Component
             }
 
             //Calls the post method to validate if the confirmation matches or not
-            axios.post('https://nhaservertest.herokuapp.com/user/pswdReset/confirmation', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+            axios.post(API_URL+'/user/pswdReset/confirmation', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
                 
                 //if we get success the we move to next page
                 if(res.status === 200)
@@ -168,17 +174,11 @@ export default class pswdConfirmation extends Component
     {
         //POP up flage that indicates weither it should open pop up or not
         const { open } = this.state;
-
-        //Previous page flag Redirection
-        if(this.state.redirectpreviousPage === true)
-        {
-            return <Redirect to="/userid"></Redirect>
-        }
         
         //Next page flage Redirection
         if(this.state.redirectNextPage === true)
         {
-            return <Redirect to="/passwordrest"></Redirect>
+            return <PassworReset/>
         }
 
         //Error display 
@@ -249,3 +249,12 @@ export default class pswdConfirmation extends Component
         )
     }
 }
+
+//access all the state
+const mapToState = (state) =>{
+    return {
+        state:state
+    }
+}
+
+export default connect(mapToState,{Actionlogin,ActionLoading,ActionError}) (pswdConfirmation);

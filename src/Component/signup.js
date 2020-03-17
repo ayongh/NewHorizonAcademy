@@ -5,12 +5,12 @@ import {close} from 'react-icons-kit/fa/close'
 import SignupEmailValidation from './signupEmailValidation'
 import {API_URL} from '../globalVariable'
 
+import Recaptcha from 'react-google-invisible-recaptcha';
+import {recaptchaValidation} from '../Action/RecaptchaVelidation'
+
 var validator = require("email-validator");
 
-
-
-
-export default class signup extends Component 
+class signup extends Component 
 {
     //Constructor
     constructor(prop)
@@ -23,13 +23,17 @@ export default class signup extends Component
             email:'',                  //User Email 
             password:'',               //User Password
             SecPassword:'',            //User password validation
+            value: '',
 
             validationCode:'',
 
             error:null,                 //Server error
              
-            redirectConfirmation: false        //Page Redirected
+            redirectConfirmation: false,        //Page Redirected
+            
         }
+        this.onResolved = this.onResolved.bind( this )
+
     }
     
     //Stores the value
@@ -48,45 +52,13 @@ export default class signup extends Component
 
         if(this.state.firstName !== "" && this.state.lastName !== "" && this.state.email !== "" && validator.validate(this.state.email) === true && this.state.password !== "" && this.state.SecPassword !== "" && this.state.password === this.state.SecPassword )
         {
-            var data  = {
-                "fname": this.state.firstName,
-                "lname": this.state.lastName,
-                "email" : this.state.email,
-                "password": this.state.password
-            }
-            
             document.getElementById("error").style.display="none"
-            
-            axios.post(API_URL+'/user/signup/emailvarification', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
-
-                if(res.status === 200)
-                {
-                    this.setState({
-                        password: res.data.password,
-                        validationCode: res.data.secret,
-                        redirectConfirmation : true
-                    })
-                }
-                else if(res.status === 403)
-                {
-                    this.setState({
-                        error: res.data.errors
-                    })
-                }
-                else
-                {
-                    this.setState({error: [{"value": "","msg": "Error Occured when performing a http request","param": "request","location": "body"}]})
-                }
-
-           
-            }).catch(err =>{
-                this.setState({ error: [{"value": "","msg": "Internal Error occure","param": "request","location": "body"}]})
-            })
-            
+            this.recaptcha.execute();
         } 
         else
         {
             document.getElementById("error").style.display="flex"
+            this.recaptcha.reset();
         }//if
     }
 
@@ -163,6 +135,50 @@ export default class signup extends Component
             document.getElementById('secPass').style.display = "none"
         }
     }
+
+    onResolved()
+    {
+        var data  = {
+            "fname": this.state.firstName,
+            "lname": this.state.lastName,
+            "email" : this.state.email,
+            "password": this.state.password
+        }
+        
+        if(recaptchaValidation(this.recaptcha.getResponse()))
+        {
+            axios.post(API_URL+'/user/signup/emailvarification', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+
+                if(res.status === 200)
+                {
+                    this.setState({
+                        password: res.data.password,
+                        validationCode: res.data.secret,
+                        redirectConfirmation : true
+                    })
+                }
+                else if(res.status === 403)
+                {
+                    this.setState({
+                        error: res.data.errors
+                    })
+                }
+                else
+                {
+                    this.setState({error: [{"value": "","msg": "Error Occured when performing a http request","param": "request","location": "body"}]})
+                }
+    
+            }).catch(err =>{
+                this.setState({ error: [{"value": "","msg": "Internal Error occure","param": "request","location": "body"}]})
+            })
+        }
+        else 
+        {
+            this.setState({error: [{"value": "","msg": "There is error with recaptcha","param": "request","location": "body"}]})
+        }
+        
+    }
+
     render() 
     {
         const errorMSG = this.state.error
@@ -240,9 +256,15 @@ export default class signup extends Component
                             </form>
                         </div>
                     </div>
-                    
+                    <Recaptcha
+                    ref={ ref => this.recaptcha = ref }
+                    //**************************************************DANGER remove site key to saftey *********************************************************************
+                    sitekey="6LdhWNsUAAAAAKIeVaOGdY3HCKy5Siva9emmZDl6"
+                    onResolved={ this.onResolved } />
                 </div>
             </div>
         )
     }
 }
+
+export default signup

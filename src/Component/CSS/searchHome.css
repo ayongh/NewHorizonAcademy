@@ -4,7 +4,6 @@
     height: 100vh;
     display: grid;
     overflow: auto;
-    background: #141414;
 }
 
 .Serach_home_container
@@ -95,17 +94,12 @@
     box-shadow: 6px 10px 29px 0px rgba(0,0,0,0.75);
 }
 
-.sideMenuBar
+
+.MainMenu_content
 {
-    display: flex;
+    margin-top: 50px;
 }
 
-.MainMenu
-{
-    width: 30%;
-    border-right: solid;
-    border-width: .5px;
-}
 
 .SubMenu
 {
@@ -175,11 +169,14 @@
     margin-left: 59px;
     width: 15%;
     outline: none;
+    z-index: 100;
+
 }
 
 .MainMenuList
 {
     cursor: pointer;
+    text-decoration: none;
 }
 
 .MainMenuList:hover
@@ -226,6 +223,7 @@
 .CaresoleCategorie
 {
     margin-left: 5%;
+    margin-top: 80px;
 }
 
 .styles_closeButton__20ID4

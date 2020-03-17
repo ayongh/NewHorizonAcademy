@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 
 export default class HomeMainPage extends Component 
 {
+    buttonClicked()
+    {
+        alert("apple")
+    }
+
+
     render() 
     {
         return (
@@ -14,7 +20,7 @@ export default class HomeMainPage extends Component
                     <div className="main_header_left_content">
                         <p>This is the content of the video</p>
                     </div>
-                    <button className="main_header_left_button">+  My List</button>
+                    <button className="main_header_left_button" onClick={() => this.buttonClicked()}>+  My List</button>
                 </div>
             </div>
 

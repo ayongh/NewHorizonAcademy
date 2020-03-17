@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import Recaptcha from 'react-google-invisible-recaptcha';
-import MainComponent from './sidemenu'
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {Actionlogin, ActionLoading, ActionError} from '../Action/loginAction'
-import {loginDispatch} from '../DispatchAction/loginDispatch'
+import axios from 'axios'
+import {API_URL} from '../globalVariable'
 
 class login extends Component
 {
@@ -22,7 +22,6 @@ class login extends Component
             
         }
         this.onResolved = this.onResolved.bind( this );
-
     }
     
 
@@ -58,13 +57,32 @@ class login extends Component
 
     //When recaptcha is resolved
     onResolved() {
-        const data = {
+        const payload = {
             email:this.state.username,
             password:this.state.password,
             token:this.recaptcha.getResponse()
         }
 
-        loginDispatch(data, this.props)
+        axios.post(API_URL+'/user/login/recaptcha', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{     
+            if(res.status === 200)
+            {
+                axios.post(API_URL+'/user/login', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+                    if(res.status === 200)
+                    {
+                        this.props.Actionlogin()
+                    }
+                    else
+                    {
+                        this.props.ActionError(res.data.errors)
+                    }
+                })
+    
+            }
+            else
+            {
+                this.props.ActionError(res.data.errors)
+            }
+        })
     }
 
     render()
@@ -84,13 +102,18 @@ class login extends Component
 
         const route = this.props.location.state
        
-        console.log(this.props)
-
         if(this.props.state.login.loginFlag)
         {
             if(route !== undefined)
             {
-                return <Redirect to= {route.prevLocation}/>
+                if(route.prevLocation === '/browse/:genre')
+                {
+                    return <Redirect to= "/Homepage"/>
+                }
+                else
+                {
+                    return <Redirect to= {route.prevLocation}/>
+                }
             }
             else
             {

@@ -5,7 +5,8 @@ import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
 import {API_URL} from '../globalVariable'
 
-
+import Recaptcha from 'react-google-invisible-recaptcha';
+import {recaptchaValidation} from '../Action/RecaptchaVelidation'
 
 export default class signupEmailValidation extends Component 
 {
@@ -24,6 +25,7 @@ export default class signupEmailValidation extends Component
              
             redirectlogin: false                //Page Redirected
         }
+        this.onResolved = this.onResolved.bind( this );
     }
 
     //Stores the value
@@ -44,6 +46,19 @@ export default class signupEmailValidation extends Component
 
         if(this.state.userVerificationCode !== '')
         {
+            this.recaptcha.execute();
+        }
+        else
+        {
+            this.recaptcha.reset();
+        }
+        
+    }
+
+    onResolved()
+    {
+        if(recaptchaValidation(this.recaptcha.getResponse()))
+        {
             var data  = {
                 "fname": this.props.firstName,
                 "lname": this.props.lastName,
@@ -52,7 +67,7 @@ export default class signupEmailValidation extends Component
                 "hasedVerifedCode": this.props.validationCode,
                 "userInputedCode":this.state.userVerificationCode
             }
-
+    
             axios.post(API_URL+'/user/signup', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
                 
                 if(res.status === 200)
@@ -60,7 +75,7 @@ export default class signupEmailValidation extends Component
                     this.setState({
                         redirectlogin:true
                     })
-
+    
                 }
                 else if( res.status === 403)
                 {
@@ -75,11 +90,15 @@ export default class signupEmailValidation extends Component
                     })
                 }
                
-
+    
            
             }).catch(err =>{
                 this.setState({Internalerror:"There is Internal error that occured"})
             })
+        }
+        else
+        {
+            this.setState({Internalerror:"Recaptcha error login as human"})
         }
         
     }
@@ -172,6 +191,11 @@ export default class signupEmailValidation extends Component
                     </div>
                     
                 </div>
+                <Recaptcha
+                ref={ ref => this.recaptcha = ref }
+                //**************************************************DANGER remove site key to saftey *********************************************************************
+                sitekey="6LdhWNsUAAAAAKIeVaOGdY3HCKy5Siva9emmZDl6"
+                onResolved={ this.onResolved } />
             </div>
         )
     }

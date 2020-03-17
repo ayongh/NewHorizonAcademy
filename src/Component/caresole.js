@@ -60,11 +60,66 @@ export default class caresole extends Component
                         <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
                         <h3>Title of the movie</h3>
                     </div>
-                    <div className="contentWraper">
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div><div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div><div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
+                        <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
+                        <h3>Title of the movie</h3>
+                    </div>
+                    <div className="contentWraper" onClick={() => this.openModel("id")}>
                         <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt="image"/>
                         <h3>Title of the movie</h3>
                     </div>
                 </div>
+
                 <Modal open={open} onClose={this.onCloseModal} center style={{color:"white", width:"80vw",height:"80vh"}}>
                     <div className="popUp_img_container">
                         <div className="popup_title">

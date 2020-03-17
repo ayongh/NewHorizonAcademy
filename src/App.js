@@ -14,16 +14,18 @@ import './Component/CSS/login.css';
 import './Component/CSS/signup.css';
 import './Component/CSS/searchHome.css';
 import './Component/CSS/pswd_rest.css';
+import './Component/CSS/userprofile.css'
+
 import Login from './Component/login';
 import Signup from './Component/signup';
 import PasswordReset from './Component/pswd_reset';
 import Filenotfound from './Component/fileNotfound';
 import UserID from './Component/pswd_userID';
 import SearchHome from './Component/serachHome';
-import SignupEmailValidation from './Component/signupEmailValidation'
-import Browse from './Component/browse'
-import Loading from './Component/loading'
-import NoInternet from './Component/noInternet'
+import Main_Browse_Show from './Component/main_browse_Show';
+import Loading from './Component/loading';
+import NoInternet from './Component/noInternet';
+import UserProfile from './Component/userprofile'
 
 
 //protected
@@ -108,10 +110,11 @@ class App extends Component
       
 
             <Route  exact path="/" component={Login}/>
-            <ProtectedRoute exact path="/browse" loggedIn={this.props.state.login.loginFlag} component={Browse}/>
+            <ProtectedRoute exact path="/browse/:genre" loggedIn={this.props.state.login.loginFlag} component={Main_Browse_Show}/>
             <ProtectedRoute exact path="/Homepage" loggedIn={this.props.state.login.loginFlag} component={SearchHome}/>
+            <ProtectedRoute exact path="/profile" loggedIn={this.props.state.login.loginFlag} component={UserProfile}/>
 
-            <Route exact path="/noIternet" component={NoInternet}/>
+            <Route exact path="/noIternet" component={NoInternet}/> 
             <Route component={Filenotfound}/>
           </Switch>
         </BrowserRouter>

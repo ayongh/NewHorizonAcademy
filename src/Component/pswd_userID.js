@@ -6,6 +6,9 @@ import {close} from 'react-icons-kit/fa/close'
 import {API_URL} from '../globalVariable'
 import PaswdConfirmation from './pswdConfirmation'
 
+import Recaptcha from 'react-google-invisible-recaptcha';
+import {recaptchaValidation} from '../Action/RecaptchaVelidation'
+
 export default class pswd_userID extends Component 
 {
     constructor(prop)
@@ -19,6 +22,7 @@ export default class pswd_userID extends Component
                          
             redirectNextPage: false
         }
+        this.onResolved = this.onResolved.bind( this );
     }
 
     //Stores the value
@@ -48,6 +52,21 @@ export default class pswd_userID extends Component
 
         if(this.state.userName !== "")
         {
+            this.recaptcha.execute();
+        }
+        else
+        {
+            this.recaptcha.reset();
+        }        
+        
+
+    }
+
+    onResolved()
+    {
+        if(recaptchaValidation(this.recaptcha.getResponse()))
+        {
+            
             var data = {
                 "email": this.state.userName
             }
@@ -57,7 +76,7 @@ export default class pswd_userID extends Component
                 console.log(res.data)
                 if(res.status === 200)
                 {
-                   this.setState({
+                this.setState({
                         redirectNextPage: true,
                     })
                 }
@@ -91,10 +110,14 @@ export default class pswd_userID extends Component
                     NotFoundError: "Internal Error occured"
                 })
             })// catch error
-
-        }        
-        
-
+        }
+        else
+        {
+            //we change the login state to false is we have an error
+            this.setState({
+                NotFoundError: "Recaptcha error occured"
+            })
+        }
     }
    
     render() 
@@ -157,8 +180,12 @@ export default class pswd_userID extends Component
                            
                         </div>
                     </div>
-                    
                 </div>
+                <Recaptcha
+                ref={ ref => this.recaptcha = ref }
+                //**************************************************DANGER remove site key to saftey *********************************************************************
+                sitekey="6LdhWNsUAAAAAKIeVaOGdY3HCKy5Siva9emmZDl6"
+                onResolved={ this.onResolved } />
             </div>
         )
     }

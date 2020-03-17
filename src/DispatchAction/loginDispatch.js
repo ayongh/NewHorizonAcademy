@@ -1,7 +1,6 @@
 import {connect} from 'react-redux'
 import axios from 'axios'
 import {API_URL} from '../globalVariable'
-import Cookies from 'js-cookie';
 
 export function loginDispatch(payload, props)
 {

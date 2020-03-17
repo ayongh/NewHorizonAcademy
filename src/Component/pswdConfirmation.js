@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import Modal from 'react-responsive-modal';
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'
@@ -10,6 +10,8 @@ import {API_URL} from '../globalVariable'
 import PassworReset from './pswd_reset'
 
 
+import Recaptcha from 'react-google-invisible-recaptcha';
+import {recaptchaValidation} from '../Action/RecaptchaVelidation'
 
 class pswdConfirmation extends Component 
 {
@@ -34,6 +36,7 @@ class pswdConfirmation extends Component
             minute:4,                           // Timer value until token expires 
             sec:60
         }
+        this.onResolved = this.onResolved.bind( this );
     }
 
     //Function changes the STATE of open flage to true - which will open popup
@@ -65,6 +68,20 @@ class pswdConfirmation extends Component
        
         //if the form inputes are not null we call the axios request
         if(this.state.userName !== "")
+        {
+            this.recaptcha.execute();
+
+        }// if     
+        else
+        {
+            this.recaptcha.reset();
+        }
+        
+    } //submit
+
+    onResolved()
+    {
+        if(recaptchaValidation(this.recaptcha.getResponse()))
         {
             var data = {
                 "authCode": this.state.confirmationCode
@@ -99,10 +116,15 @@ class pswdConfirmation extends Component
                     error: "Internal Error occured"
                 })
             })// catch error
-
-        }// if     
-        
-    } //submit
+        }
+        else
+        {
+           //if there is an error in AXIOS request we catch error 
+           this.setState({
+                error: "Internal Error occured"
+            }) 
+        }
+    }
 
     formValidation()
     {
@@ -181,6 +203,12 @@ class pswdConfirmation extends Component
             return <PassworReset/>
         }
 
+
+        if(this.state.redirectpreviousPage === true)
+        {
+            window.location.reload(false); 
+        }
+
         //Error display 
         const Notfounderr = this.state.error ;
         let err;
@@ -245,6 +273,11 @@ class pswdConfirmation extends Component
                     <p style={{color:"red", width:"100%", textAlign:"center"}}>The code sent to your email has expired process will restart again</p>
                 </Modal>
 
+                <Recaptcha
+                ref={ ref => this.recaptcha = ref }
+                //**************************************************DANGER remove site key to saftey *********************************************************************
+                sitekey="6LdhWNsUAAAAAKIeVaOGdY3HCKy5Siva9emmZDl6"
+                onResolved={ this.onResolved } />
             </div>
         )
     }

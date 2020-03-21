@@ -5,6 +5,7 @@ import {close} from 'react-icons-kit/fa/close'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {Actionlogin, ActionLoading, ActionError} from '../Action/loginAction'
+import {ActionUserIntialize} from '../Action/userinfoAction'
 import axios from 'axios'
 import {API_URL} from '../globalVariable'
 
@@ -22,6 +23,10 @@ class login extends Component
             
         }
         this.onResolved = this.onResolved.bind( this );
+    }
+
+    componentDidCatch(error, info) {
+        console.log(error)
     }
     
 
@@ -63,6 +68,7 @@ class login extends Component
             token:this.recaptcha.getResponse()
         }
 
+
         axios.post(API_URL+'/user/login/recaptcha', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{     
             if(res.status === 200)
             {
@@ -70,6 +76,8 @@ class login extends Component
                     if(res.status === 200)
                     {
                         this.props.Actionlogin()
+                        this.props.ActionUserIntialize(res.data.message)
+
                     }
                     else
                     {
@@ -82,7 +90,13 @@ class login extends Component
             {
                 this.props.ActionError(res.data.errors)
             }
+        }).catch(error =>
+        {
+            return Promise.reject(error.response)
+
         })
+        
+        
     }
 
     render()
@@ -176,4 +190,4 @@ const mapToState = (state) =>{
     }
 }
 
-export default connect(mapToState,{Actionlogin,ActionLoading,ActionError}) (login);
+export default connect(mapToState,{Actionlogin,ActionLoading,ActionError,ActionUserIntialize}) (login);

@@ -3,6 +3,9 @@ export const LOGIN = "LOGIN";
 export const LOADING = "LOGIN_LOADING";
 export const ERROR = "LOGIN_ERROR";
 
-export const AUTH_VALID = "AUTH_VALID";
-export const AUTH_ERROR = "AUTH_ERROR";
+export const USER_INITALIZED = "USER_INIT";
+export const USER_LOADING = "USER_LOADING";
 
+export const USER_NAME = "USER_NAME";
+export const USER_EMAIL = "USER_EMAIL";
+export const USER_ERROR = "USER_ERROR";

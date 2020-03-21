@@ -8,6 +8,8 @@ import {
   Route
 } from "react-router-dom";
 import {connect} from 'react-redux'
+import {ActionUserIntialize} from './Action/userinfoAction'
+
 
 import './App.css';
 import './Component/CSS/login.css';
@@ -26,6 +28,9 @@ import Main_Browse_Show from './Component/main_browse_Show';
 import Loading from './Component/loading';
 import NoInternet from './Component/noInternet';
 import UserProfile from './Component/userprofile'
+import Update_Username from './Component/update_username'
+import Update_Email from './Component/updateProfileEmail'
+import Update_Email_Validation from './Component/updateEmailConfirmation'
 
 
 //protected
@@ -113,6 +118,9 @@ class App extends Component
             <ProtectedRoute exact path="/browse/:genre" loggedIn={this.props.state.login.loginFlag} component={Main_Browse_Show}/>
             <ProtectedRoute exact path="/Homepage" loggedIn={this.props.state.login.loginFlag} component={SearchHome}/>
             <ProtectedRoute exact path="/profile" loggedIn={this.props.state.login.loginFlag} component={UserProfile}/>
+            <ProtectedRoute exact path="/profile/username" loggedIn={this.props.state.login.loginFlag} component={Update_Username}/>
+            <ProtectedRoute exact path="/profile/email" loggedIn={this.props.state.login.loginFlag} component={Update_Email}/>
+            <ProtectedRoute exact path="/profile/email/validation" loggedIn={this.props.state.login.loginFlag} component={Update_Email_Validation}/>
 
             <Route exact path="/noIternet" component={NoInternet}/> 
             <Route component={Filenotfound}/>
@@ -129,4 +137,4 @@ const mapToState = (state) =>{
   }
 }
 
-export default connect(mapToState, {Actionlogin, ActionLoading, ActionError}) (App);
+export default connect(mapToState, {Actionlogin, ActionLoading, ActionError,ActionUserIntialize}) (App);

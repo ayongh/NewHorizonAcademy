@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Link } from 'react-router-dom'
+import {connect} from 'react-redux'
 
 class userprofile extends Component 
 {
@@ -15,24 +16,25 @@ class userprofile extends Component
 
     render() 
     {
+       
         return (
           <div className="userprofile_main_container">
                 <div className="user_info_container">
                     <Link to="/">Home</Link>
-                  <h3> Account</h3>
+                  <h3> Update Info</h3>
                   <div className="userinfo_wrapper">
                     <div className="userinfo_title">
                         <p className="subTitle">User info</p>
                     </div>
                     <div className="userinfo_detail">
-                        <p className="Name">Abhishek Yonghang</p>
-                        <p className="subIdentifier">ayongh1@gmail.com</p>
+                        <p className="Name">{this.props.state.userInfo.FirstName +" "+ this.props.state.userInfo.LastName}</p>
+                        <p className="subIdentifier">{this.props.state.userInfo.Email}</p>
                         <p className="subIdentifier">password : *********</p>
                     </div>
                     <div className="userinfo_detail_changeDetail">
-                        <Link to=""><p className="subIdentifier">Change Name</p></Link>
-                        <Link to=""><p className="subIdentifier">Change Email</p></Link>
-                        <Link to=""><p className="subIdentifier">Change Password</p></Link>
+                        <Link to="/profile/username"><p className="subIdentifier">Update Name</p></Link>
+                        <Link to="/profile/email"><p className="subIdentifier">Update Email</p></Link>
+
                     </div>
                   </div>
                   
@@ -42,4 +44,12 @@ class userprofile extends Component
     }
 }
 
-export default userprofile
+
+//access all the state
+const mapToState = (state) =>{
+    return {
+        state:state
+    }
+}
+
+export default connect(mapToState) (userprofile)

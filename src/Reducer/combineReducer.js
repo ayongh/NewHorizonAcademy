@@ -1,12 +1,12 @@
 import loginReducer from './ReducerLogin'
-import authenticate from './ReducerAuthenticate'
+import userinfoReducer from './ReducerUserInfo'
 
 import {combineReducers} from 'redux'
 
 
 const allReducers = combineReducers({
     login: loginReducer,
-    authenticate: authenticate,
+    userInfo: userinfoReducer
 })
 
 export default allReducers;

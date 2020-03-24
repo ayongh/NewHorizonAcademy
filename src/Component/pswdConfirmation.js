@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Redirect, Link } from 'react-router-dom'
 import Modal from 'react-responsive-modal';
 import { Icon } from 'react-icons-kit'
 import {close} from 'react-icons-kit/fa/close'

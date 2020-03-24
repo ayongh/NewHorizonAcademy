@@ -8,7 +8,7 @@ import {API_URL} from '../globalVariable'
 
 import SearchHomeMain from './HomeMainPage'
 import Browse from './browse'
-import { Link, Redirect } from "react-router-dom";
+import { Link} from "react-router-dom";
 
  
 class sidemenu extends React.Component {

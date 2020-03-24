@@ -125,13 +125,7 @@
 {
     margin-top: 3%;
 }
-.popup_title
-{
-    width: 90%;
-    text-align: center;
-    background-color: white;
-    position: static;
-}
+
 .icon
 {
     width: 100%;
@@ -169,7 +163,7 @@
     margin-left: 59px;
     width: 15%;
     outline: none;
-    z-index: 100;
+    z-index: 1000;
 
 }
 
@@ -231,10 +225,13 @@
     outline: none;
     cursor: pointer;
 }
+
 .caresoleImage
 {
     width: 100%;
+    max-height: 600px;
 }
+
 
 .styles_modal__gNwvD
 {
@@ -243,54 +240,27 @@
 }
 
 
-.caresole_pop_Image
-{
-    width: 100%;
-    height: 70vh;
-}
 
-.caresole_popup_container
-{
-    color: white;
-    position: absolute;
-    background-image: linear-gradient(to left, rgba(255,0,0,0), #2aa58d);
-    width: 90%;
-    height: 70vh;
-    padding-left: 5%;
-}
-
-.popup_description
-{
-    margin-top: 5%;
-    width: 50%;
-    word-wrap: break-word;
-    max-height: 70.0001%;
-    overflow: hidden;
-}
 .popUp_img_container
 {
     display: grid;
+    overflow: hidden;
 }
 
-.popup_image
+.popup_title
 {
-    display: flex;
-    
+    width: 90%;
+    text-align: center;
+    background-color: white;
+    position: static;
 }
+
 .popup_content_wraper
 {
     width: 100%;
 }
 
-.popup_movie_btn
-{
-    margin: 10px;
-    transition: all 1s;
-}
-.popup_movie_btn:hover
-{
-    transform: scale(1.5); /* Equal to scaleX(2) scaleY(0.5) */
-}
+
 
 section
 {
@@ -330,4 +300,199 @@ nav
 {
     display: none;
     transition-timing-function: ease-in-out
+}
+
+
+.caresole_pop_Image
+{
+    width: 100%;
+    height: 70vh;
+}
+
+
+.popup_description
+{
+    margin-top: 5%;
+    width: 90%;
+    word-wrap: break-word;
+    max-height: 70.0001%;
+    overflow: hidden;
+}
+
+.caresole_image_wrapper
+{
+    width: 40%;
+    position: relative;
+}
+.caresole_popup_img
+{
+    width: 100%;
+}
+
+.caresole_wrapper
+{
+    width: 100%;
+    display: inline-flex;
+}
+
+
+.caresole_popup_container
+{
+   width: 50%;
+   padding-top: 2%;
+}
+
+.popup_action
+{
+    display: flex;
+}
+
+.popup_movie_btn
+{
+    margin: 10px;
+    transition: all 1s;
+}
+
+.popup_movie_btn:hover
+{
+    color: gainsboro;
+    cursor: pointer;
+}
+
+.popup_image_holder
+{
+    width: 80%;
+}
+
+.caresoleImage_description
+{
+    position: absolute;
+    top: 50%;
+    bottom: 3px;
+    left: 0;
+    right: 0;
+    background: rgba(29, 106, 154, 0.72);
+    color: #fff;
+    visibility: hidden;
+    opacity: 0;
+
+    /* transition effect. not necessary */
+    transition: opacity .2s, visibility .2s;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.contentWraper:hover .caresoleImage_description
+{
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.popup_image
+{
+    display: flex;
+    position: relative;
+    width: 80%;
+    margin: 10%;
+}
+
+.popup_image_description
+{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(29, 106, 154, 0.72);
+    color: #fff;
+    visibility: hidden;
+    opacity: 0;
+
+    padding-top: 50%;
+    padding-left: 25%;
+    
+    margin-left: 10%;
+    margin-right: 10%;
+
+    /* transition effect. not necessary */
+    transition: opacity .2s, visibility .2s;
+}
+
+.caresole_image_wrapper_container
+{
+    position: relative;
+}
+.caresole_image_wrapper_container:hover .popup_image_description
+{
+    visibility: visible;
+    opacity: 1;
+}
+
+.styles_modal__gNwvD
+{
+    max-width: 90%;
+}
+
+
+.caresole_section_image_desc
+{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(29, 106, 154, 0.72);
+    color: #fff;
+    visibility: hidden;
+    opacity: 0;
+
+    /* transition effect. not necessary */
+    transition: opacity .2s, visibility .2s;
+
+}
+
+.contentWraper:hover .caresole_section_image_desc
+{
+    visibility: visible;
+    opacity: 1;
+}
+
+.noMargin
+{
+    margin: 0px;
+}
+
+.contentWraper_episode_content
+{
+    display: flex;
+    margin-top:10px;
+    margin-bottom:10px;
+    transition: all 1s;
+}
+
+.caresoleImage_episode
+{
+    width: 24%;
+}
+
+.Episodes
+{
+    max-height: 400px;
+    overflow: auto;
+}
+
+
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+.caresole_episode_desc
+{
+    margin-left: 15px;
+}
+
+.contentWraper_episode_content:hover
+{
+    transform: scale(1.05)
 }

@@ -63,35 +63,8 @@ const ProtectedRoute = ({ component: Comp, loggedIn,validlogin, path, ...rest })
   )
 }
 
-
-//protected
-const ProtectedRouteSignup = ({ component: Comp, loggedIn,validlogin, path, ...rest }) => {
-  return (
-    <Route
-      path={path}
-      {...rest}
-      render={(props) => {
-        if(loggedIn)
-        {
-          return <Comp {...props}/>
-        }
-        else
-        {
-          return <Redirect to={{pathname: "/", state: {prevLocation: path, error: "You need to login first!"}}}/>
-        }//else
-        
-      }} //render
-    /> //Route
-  )
-}
-
 class App extends Component
 {
-  constructor(props)
-  {
-    super(props)
-  }
-  
   componentDidMount()
   {
     authDispatch(this.props)
@@ -115,7 +88,7 @@ class App extends Component
       
 
             <Route  exact path="/" component={Login}/>
-            <ProtectedRoute exact path="/browse/:genre" loggedIn={this.props.state.login.loginFlag} component={Main_Browse_Show}/>
+            <ProtectedRoute exact path="/browse/movie" loggedIn={this.props.state.login.loginFlag} component={Main_Browse_Show}/>
             <ProtectedRoute exact path="/Homepage" loggedIn={this.props.state.login.loginFlag} component={SearchHome}/>
             <ProtectedRoute exact path="/profile" loggedIn={this.props.state.login.loginFlag} component={UserProfile}/>
             <ProtectedRoute exact path="/profile/username" loggedIn={this.props.state.login.loginFlag} component={Update_Username}/>

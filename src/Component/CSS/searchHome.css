@@ -192,7 +192,8 @@
     width: 90vw;
     height: auto;
     flex-wrap: wrap;
-    margin: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
     overflow-wrap: unset;
     transition: height 1.15s;
 
@@ -200,17 +201,17 @@
 
 .contentWraper
 {
-    width: 24%;
+    width: 15.6%;
+    margin: .5%;
     height: auto;
     display: inline-block;
-    margin: .5%;
     position: relative;
     transition: all 1s;
 }
 
 .contentWraper:hover 
 {
-    transform: scale(1.1); /* Equal to scaleX(2) scaleY(0.5) */
+    transform: scale(1.08); /* Equal to scaleX(2) scaleY(0.5) */
     z-index: 100;
 }
 
@@ -422,6 +423,7 @@ nav
 .caresole_image_wrapper_container
 {
     position: relative;
+    outline: none;
 }
 .caresole_image_wrapper_container:hover .popup_image_description
 {
@@ -473,7 +475,7 @@ nav
 
 .caresoleImage_episode
 {
-    width: 24%;
+    width: 100%;
 }
 
 .Episodes

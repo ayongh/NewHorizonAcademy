@@ -1,7 +1,6 @@
 import {USER_INITALIZED, USER_NAME,USER_EMAIL,USER_ERROR} from './ActionType'
 
 export function ActionUserIntialize(payload) {
-    console.log("asdf")
     return{
         type:USER_INITALIZED,
         payload:payload

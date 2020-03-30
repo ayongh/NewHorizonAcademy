@@ -25,11 +25,6 @@ class login extends Component
         this.onResolved = this.onResolved.bind( this );
     }
 
-    componentDidCatch(error, info) {
-        console.log(error)
-    }
-    
-
     handleChange = (e) =>{
         this.setState({
             [e.target.id]: e.target.value
@@ -90,11 +85,8 @@ class login extends Component
             {
                 this.props.ActionError(res.data.errors)
             }
-        }).catch(error =>
-        {
-            return Promise.reject(error.response)
-
         })
+        
         
         
     }
@@ -120,7 +112,7 @@ class login extends Component
         {
             if(route !== undefined)
             {
-                if(route.prevLocation === '/browse/:genre')
+                if(route.prevLocation === '/browse/:genre' || route.prevLocation === '/watch/:videoID')
                 {
                     return <Redirect to= "/Homepage"/>
                 }
@@ -134,6 +126,7 @@ class login extends Component
                 return <Redirect to= "/Homepage"/>
             }   
         }
+
             
 
         return (
@@ -141,7 +134,8 @@ class login extends Component
                 <div className="login_left">
                     <div className="login_left_outer_container">
                         <h3>Create New User</h3>
-                        <label>If you dont have a user name and password created please 
+                        <label>
+                            If you dont have a user name and password created please 
                             do so now by clicking the button below. Thank you!
                         </label>
                         <Link to={"/signup"}>

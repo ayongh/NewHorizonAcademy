@@ -33,9 +33,6 @@ export default class signupEmailValidation extends Component
         this.setState({
             [e.target.id]: e.target.value
         })
-
-        console.log(this.props)
-
     }
 
     //Validates the user name and passowrd and provides with token to login
@@ -68,24 +65,24 @@ export default class signupEmailValidation extends Component
                 "userInputedCode":this.state.userVerificationCode
             }
     
-            axios.post(API_URL+'/user/signup', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+            axios.post(API_URL+'/user/signup', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
                 
                 if(res.status === 200)
                 {
-                    this.setState({
+                    await this.setState({
                         redirectlogin:true
                     })
     
                 }
                 else if( res.status === 403)
                 {
-                    this.setState({
+                    await this.setState({
                         error: res.data.errors
                     })
                 }
                 else
                 {
-                    this.setState({
+                    await this.setState({
                         singleServererror: res.data.error
                     })
                 }

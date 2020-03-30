@@ -17,6 +17,7 @@ import './Component/CSS/signup.css';
 import './Component/CSS/searchHome.css';
 import './Component/CSS/pswd_rest.css';
 import './Component/CSS/userprofile.css'
+import './Component/CSS/video.css'
 
 import Login from './Component/login';
 import Signup from './Component/signup';
@@ -31,6 +32,7 @@ import UserProfile from './Component/userprofile'
 import Update_Username from './Component/update_username'
 import Update_Email from './Component/updateProfileEmail'
 import Update_Email_Validation from './Component/updateEmailConfirmation'
+import Video from './Component/video'
 
 
 //protected
@@ -94,6 +96,7 @@ class App extends Component
             <ProtectedRoute exact path="/profile/username" loggedIn={this.props.state.login.loginFlag} component={Update_Username}/>
             <ProtectedRoute exact path="/profile/email" loggedIn={this.props.state.login.loginFlag} component={Update_Email}/>
             <ProtectedRoute exact path="/profile/email/validation" loggedIn={this.props.state.login.loginFlag} component={Update_Email_Validation}/>
+            <ProtectedRoute exact path="/watch/:videoID" loggedIn={this.props.state.login.loginFlag} component={Video}/>
 
             <Route exact path="/noIternet" component={NoInternet}/> 
             <Route component={Filenotfound}/>

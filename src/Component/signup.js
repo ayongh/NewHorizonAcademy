@@ -147,11 +147,11 @@ class signup extends Component
         
         if(recaptchaValidation(this.recaptcha.getResponse()))
         {
-            axios.post(API_URL+'/user/signup/emailvarification', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
+            axios.post(API_URL+'/user/signup/emailvarification', data, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
 
                 if(res.status === 200)
                 {
-                    this.setState({
+                    await this.setState({
                         password: res.data.password,
                         validationCode: res.data.secret,
                         redirectConfirmation : true

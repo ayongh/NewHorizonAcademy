@@ -433,7 +433,7 @@ nav
 
 .styles_modal__gNwvD
 {
-    max-width: 90%;
+    width: 100vw;
 }
 
 
@@ -497,4 +497,24 @@ nav
 .contentWraper_episode_content:hover
 {
     transform: scale(1.05)
+}
+
+.search{
+    font-size: 20px;
+    font-weight: 50;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding:15px;
+    margin-bottom: 20px;
+    border-top-style: none;
+    border-left-style:  none;
+    border-right-style:  none;
+
+}
+
+.searchNoContent
+{
+    width: 100%;
+    text-align: center;
 }

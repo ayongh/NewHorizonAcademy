@@ -20,6 +20,7 @@ class video extends Component
             progressValue:null,
             index:0,
 
+            playing: false,
             url: null,
             control:true
         }
@@ -108,8 +109,52 @@ class video extends Component
         }
         
     }
+
+    getpauseContent()
+    {
+
+        if(this.state.section !== null)
+        {
+            return(
+                <div className="pauseContent">
+                    <h1>{this.state.section.name}</h1>
+                    <p>{this.state.section.description}</p>
+                    <p> Duration: {this.state.duration}</p>
+                </div>
+            )
+        }
+        
+    }
+
+    async getImageBlobURL()
+    {
+        var file = new Blob([this.state.url], {type: "text/javascript"})
+        var url = URL.createObjectURL(file)
+
+        console.log(url)        
+    }
+
+    handlePause()
+    {
+        document.getElementById("pauseContent").style.display="flex";
+    }
+
+    pauseContentPlay()
+    {
+        this.setState({
+            playing:true
+        })
+
+    }
+
+    handleonplay()
+    {
+        document.getElementById("pauseContent").style.display="none";
+    }
+
     render()
     {
+        this.getImageBlobURL()
         return (
             <div className="Video_container" >
                 <div className="video_warpper" onContextMenu={(e)=> e.preventDefault()}>
@@ -118,13 +163,14 @@ class video extends Component
                         url= {this.state.url}
                         className='react-player'
                         pip={false}
-                        playing={false}
+                        playing={this.state.playing}
                         controls={this.state.control}
                         onEnablePIP	={this.handleminimize}
                         onDisablePIP = {this.handleMaximize}
                         onProgress={this.handleProgress}
                         onDuration={this.handleDuration}
-
+                        onPause ={this.handlePause}
+                        onPlay= {this.handleonplay}
                         width='80%'
                         height='100%'
 
@@ -137,14 +183,16 @@ class video extends Component
                         }}}
                     />
 
+                    <div className="pauseVideoContainer" id="pauseContent" onClick={()=>this.pauseContentPlay()}>
+                        {this.getpauseContent()}
+                    </div>
                 </div>
                 
                 <div className="NextVideo_container_wrapper">
                     <div className="NextVideo_container">
-                        <div className="current-playing">
-                            {this.getNextPlaying()}
-                        </div>
-                        <div className="Next_video">
+                        <div className="Next_video">                        
+                            <h2>videos</h2>
+
                             {this.getVideoList()}
                         </div>
 

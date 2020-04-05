@@ -25,6 +25,8 @@ import PasswordReset from './Component/pswd_reset';
 import Filenotfound from './Component/fileNotfound';
 import UserID from './Component/pswd_userID';
 import SearchHome from './Component/serachHome';
+import SearchClass from './Component/searchClassMenu';
+
 import Main_Browse_Show from './Component/main_browse_Show';
 import Loading from './Component/loading';
 import NoInternet from './Component/noInternet';
@@ -91,6 +93,7 @@ class App extends Component
 
             <Route  exact path="/" component={Login}/>
             <ProtectedRoute exact path="/browse/movie" loggedIn={this.props.state.login.loginFlag} component={Main_Browse_Show}/>
+            <ProtectedRoute exact path="/search/movie" loggedIn={this.props.state.login.loginFlag} component={SearchClass}/>
             <ProtectedRoute exact path="/Homepage" loggedIn={this.props.state.login.loginFlag} component={SearchHome}/>
             <ProtectedRoute exact path="/profile" loggedIn={this.props.state.login.loginFlag} component={UserProfile}/>
             <ProtectedRoute exact path="/profile/username" loggedIn={this.props.state.login.loginFlag} component={Update_Username}/>

@@ -70,12 +70,16 @@ class login extends Component
                 axios.post(API_URL+'/user/login', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
                     if(res.status === 200)
                     {
+                        console.log(res.data.message.like)
+                        localStorage.setItem("userLikes", JSON.stringify( res.data.message.like))
+                        localStorage.setItem("userDisLike",JSON.stringify( res.data.message.dislike))
                         this.props.Actionlogin()
                         this.props.ActionUserIntialize(res.data.message)
 
                     }
                     else
                     {
+                        this.recaptcha.reset();
                         this.props.ActionError(res.data.errors)
                     }
                 })
@@ -83,6 +87,7 @@ class login extends Component
             }
             else
             {
+                this.recaptcha.reset();
                 this.props.ActionError(res.data.errors)
             }
         })

@@ -17,6 +17,7 @@ export default class caresole extends Component
         super(prop)
 
         this.state = {
+            search:null,
             open: false,
             classes:null,
             class:null,
@@ -45,63 +46,6 @@ export default class caresole extends Component
             }
         })
     }
-    
-    componentDidMount()
-    {
-        axios.get(API_URL+'/course/all',{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
-            if(res.status === 200)
-            {
-                this.setState({
-                    classes:res.data.classes
-                })
-            }
-        })
-    }
-
-    RenderLikeButton(val)
-    {
-        var LikeList= JSON.parse( localStorage.getItem("userLikes"))
-        var likeButton;
-
-        if(LikeList !== undefined && LikeList !== null)
-        {
-            likeButton =  LikeList.forEach(element => {
-                if(val._id === element)
-                {
-                    console.log("likeID found")
-                    var id = "like"+element
-                    return(
-                        <Icon className="popup_movie_btn" id={id} size={40} icon={buttonCheck} onClick={() =>this.LikeAction(val._id)}></Icon>
-                    )
-                }
-                
-            });
-
-            console.log(likeButton)
-        }
-
-    }
-
-    RenderdisLikeButton(val)
-    {
-        var disLikeList= JSON.parse( localStorage.getItem("userDisLike"))
-
-        if(disLikeList !== undefined && disLikeList !== null)
-        {
-            disLikeList.forEach(element => {
-                if(val._id === element)
-                {
-                    var id = "like"+element
-                    return(
-                        <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} onClick={() =>this.disLikeAction(val._id)}></Icon>
-                    )
-
-                }
-                
-            });
-        }
-    }
-
 
     onCloseModal = () => {
         this.setState({ open: false});
@@ -133,28 +77,37 @@ export default class caresole extends Component
         var classesElement
 
        
-        if (Classes !== null)
+        if (Classes !== null )
         {
-            classesElement = Classes.map( (val, index) => {
-                return (
-                    <div key= {val._id} className="contentWraper">
-                        <img className="caresoleImage" id={val._id} onError={this.errorImag} src={val.thumbnail} alt={'apple'}/>
-                        <div className="caresoleImage_description">
-                            <h3>{val.name}</h3>
-                            <p>{val.description}</p>
-                            <div className="popup_action">
-                                
-                                {this.RenderLikeButton(val)}
-                                {this.RenderdisLikeButton(val)}
-                                <Icon className="popup_movie_btn" id={"add"+val._id} size={40} icon={buttonAdd} onClick={()=>this.open(val)}></Icon>
-
-
-                            </div>
-                        </div>      
-                    </div>  
-                )
-            }) 
+            if(Classes.length > 0)
+            {
+                classesElement = Classes.map( (val, index) => {
+                    return (
+                        <div key= {val._id} className="contentWraper" onClick={()=>this.open(val)} >
+                            <img className="caresoleImage" id={val._id} onError={this.errorImag} src={val.thumbnail} alt={'apple'}/>
+                            <div className="caresoleImage_description">
+                                <h3>{val.name}</h3>
+                                <p>{val.description}</p>
+                                <div className="popup_action">
+                                    <Icon className="popup_movie_btn" size={40} icon={buttonCheck}></Icon>
+                                    <Icon className="popup_movie_btn" size={40} icon={buttonClose}></Icon>
+                                    <Icon className="popup_movie_btn" size={40} icon={buttonAdd}></Icon>
+                                </div>
+                            </div>      
+                        </div>  
+                    )
+                }) 
+            }
+            else
+            {
+                classesElement = <div className="searchNoContent"><p>No content found</p> </div>
+            }
         }
+        else
+        {
+            classesElement = <div className="searchNoContent"><p>Search Content with Title and Tag</p> </div>
+        }
+
 
         return classesElement;
     }
@@ -202,31 +155,6 @@ export default class caresole extends Component
         
     }
 
-    LikeAction( classID)
-    {
-        console.log(classID)
-        var payload= {
-            classID: classID
-        }
-        
-        axios.post(API_URL+'/course/like', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
-            console.log(res.data)
-    
-        }) 
-    }
-
-    disLikeAction( classID)
-    {
-        console.log(classID)
-        var payload= {
-            classID: classID
-        }
-        
-        axios.post(API_URL+'/course/dislike', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
-            console.log(res.data)
-    
-        }) 
-    }
     getModelContent()
     {
         if(this.state.open)
@@ -285,14 +213,33 @@ export default class caresole extends Component
         }
     }
 
+    handleChange = (e) =>
+    {
+        this.setState({
+            [e.target.id]: e.target.value
+        })
+
+        axios.get(API_URL+'/course/search/'+this.state.search,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+            if(res.status === 200)
+            {
+                console.log(res.data.data)
+                this.setState({
+                    classes:res.data.data
+                })
+            }
+        })
+    }
+
 
     render() {
-        const { open } = this.state;        
-
+        const { open } = this.state; 
+        
         return (
             <div>
                 <h2 className="CaresoleCategorie">{this.props.categorie}</h2>
                 <div className="caresoleWrapper">
+                    <input className="search" id="search" onChange={this.handleChange} type="text" placeholder="Search"/>
+
                     <div className="caresole">
                         {this.getImageElement()}
                     </div>

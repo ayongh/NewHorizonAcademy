@@ -8,7 +8,9 @@ import {API_URL} from '../globalVariable'
 
 import SearchHomeMain from './HomeMainPage'
 import Browse from './browse'
-import { Link} from "react-router-dom";
+import SearchClass from './searchClass'
+
+import {Link} from "react-router-dom";
 
  
 class sidemenu extends React.Component {
@@ -16,6 +18,7 @@ class sidemenu extends React.Component {
     super(props);
     this.state = {
       sidebarOpen: false,
+      search:null,
       redirctLoginPage:false,
     };
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
@@ -41,6 +44,8 @@ class sidemenu extends React.Component {
     })
   }// logout
  
+  
+
   render() {
     if(this.state.redirctLoginPage)
     {
@@ -56,7 +61,12 @@ class sidemenu extends React.Component {
     {
       component = <Browse/>
     }
-
+    else if(this.props.name === "search")
+    {
+      component = <SearchClass/>
+    }
+    
+    console.log(this.state.search)
     return (
       <Sidebar 
         sidebar=
@@ -78,8 +88,8 @@ class sidemenu extends React.Component {
             <Link to='/browse/movie' className="MainMenuList">
               <p>Movie</p>
             </Link>
-            <Link to='/browse/show' className="MainMenuList">
-              <p>Show</p>
+            <Link to='/search/movie' className="MainMenuList">
+              <p>search</p>
             </Link>
           </div>
         </div>
@@ -91,8 +101,7 @@ class sidemenu extends React.Component {
         <button className="float_btn" onClick={() => this.onSetSidebarOpen(true)}>
           <Icon size={30} className="MenuIcon" icon={ic_sort}/>
         </button>
-        <input className="float_btn search" placeholder="Title, Description, and Author"></input>
-        
+
         {component}
       </Sidebar>
     );

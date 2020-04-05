@@ -1,1 +1,1 @@
-export const API_URL = "https://nhaservertest.herokuapp.com";
+export const API_URL = "https://nhaserver.herokuapp.com";

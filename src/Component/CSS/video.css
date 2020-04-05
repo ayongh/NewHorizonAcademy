@@ -63,3 +63,20 @@
     width: 24%;
 }
 
+
+.pauseVideoContainer
+{
+    position: absolute;
+    color: white;
+    width: 80%;
+    height: 100%;
+    background:black;
+    opacity: .6;
+    display: none;
+}
+
+.pauseContent
+{
+    margin-top: 20%;
+    margin-left: 2%;
+}

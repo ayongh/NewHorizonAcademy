@@ -19,8 +19,9 @@ export async function recaptchaValidation(recaptchaToken) {
                 return false
             }
         }) 
-    } catch (error) {
-        return false
+    } catch (error) 
+    {
+        return Promise.reject(error.response)    
     }
     
 

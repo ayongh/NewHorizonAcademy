@@ -61,45 +61,67 @@ export default class caresole extends Component
     RenderLikeButton(val)
     {
         var LikeList= JSON.parse( localStorage.getItem("userLikes"))
+        var flag = false;
         var likeButton;
 
         if(LikeList !== undefined && LikeList !== null)
         {
-            likeButton =  LikeList.forEach(element => {
-                if(val._id === element)
+            for(var i = 0; i < LikeList.length; i++)
+            {
+                if(val._id === LikeList[i])
                 {
-                    console.log("likeID found")
-                    var id = "like"+element
-                    return(
-                        <Icon className="popup_movie_btn" id={id} size={40} icon={buttonCheck} onClick={() =>this.LikeAction(val._id)}></Icon>
-                    )
+                    flag = true;
+                    break
                 }
-                
-            });
+            }
 
-            console.log(likeButton)
         }
+        
+        if(flag)
+        {
+            likeButton =  <Icon className="popup_movie_btn" style={{color:"green"}} id={"like"+val._id} size={40} icon={buttonCheck} onClick={() =>this.LikeAction(val._id)}></Icon>
+
+        }
+        else
+        {
+            likeButton =  <Icon className="popup_movie_btn" id={"like"+val._id} size={40} icon={buttonCheck} onClick={() =>this.LikeAction(val._id)}></Icon>
+        }
+
+        return likeButton
 
     }
 
     RenderdisLikeButton(val)
     {
-        var disLikeList= JSON.parse( localStorage.getItem("userDisLike"))
+        var LikeList= JSON.parse( localStorage.getItem("userDisLike"))
+        var flag = false;
+        var likeButton;
 
-        if(disLikeList !== undefined && disLikeList !== null)
+        if(LikeList !== undefined && LikeList !== null)
         {
-            disLikeList.forEach(element => {
-                if(val._id === element)
+            for(var i = 0; i < LikeList.length; i++)
+            {
+                if(val._id === LikeList[i])
                 {
-                    var id = "like"+element
-                    return(
-                        <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} onClick={() =>this.disLikeAction(val._id)}></Icon>
-                    )
-
+                    flag = true;
+                    break
                 }
-                
-            });
+            }
+
         }
+        
+        if(flag)
+        {
+            likeButton =  <Icon className="popup_movie_btn" style={{color:"red"}} id={"dislike"+val._id} size={40} icon={buttonClose} onClick={() =>this.disLikeAction(val._id)}></Icon>
+
+        }
+        else
+        {
+            likeButton = <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} onClick={() =>this.disLikeAction(val._id)}></Icon>
+
+        }
+
+        return likeButton
     }
 
 
@@ -204,14 +226,18 @@ export default class caresole extends Component
 
     LikeAction( classID)
     {
-        console.log(classID)
         var payload= {
             classID: classID
         }
         
         axios.post(API_URL+'/course/like', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
-            console.log(res.data)
-    
+            if(res.status === 200)
+            {
+                localStorage.setItem("userLikes", JSON.stringify( res.data.data.like))
+                localStorage.setItem("userDisLike",JSON.stringify( res.data.data.dislike))
+                var likeID= "like"+classID
+                document.getElementById(likeID).style.color = "green"
+            }    
         }) 
     }
 

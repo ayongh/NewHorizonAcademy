@@ -274,13 +274,6 @@ export default class caresole extends Component
                                 <p className="popup_description">
                                     {this.state.class.description}
                                 </p>
-                                <div className="popup_action">
-                                    <Icon className="popup_movie_btn" size={40} icon={buttonCheck}></Icon>
-                                    <Icon className="popup_movie_btn" size={40} icon={buttonClose}></Icon>
-                                    <Icon className="popup_movie_btn" size={40} icon={buttonAdd}></Icon>
-
-                                </div>
-
                                 
                                 <div className="popup_content_wraper">
                                     <nav>

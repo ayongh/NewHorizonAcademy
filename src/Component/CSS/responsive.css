@@ -144,7 +144,13 @@
         width: 100px;
     }
 
-    /* video player */
+
+    .search_home_main_container
+    {
+        height: auto;
+    }
     
+        /* video player */
+
 }
   

@@ -66,7 +66,6 @@ class sidemenu extends React.Component {
       component = <SearchClass/>
     }
     
-    console.log(this.state.search)
     return (
       <Sidebar 
         sidebar=

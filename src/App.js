@@ -18,6 +18,7 @@ import './Component/CSS/searchHome.css';
 import './Component/CSS/pswd_rest.css';
 import './Component/CSS/userprofile.css'
 import './Component/CSS/video.css'
+import './Component/CSS/responsive.css'
 
 import Login from './Component/login';
 import Signup from './Component/signup';

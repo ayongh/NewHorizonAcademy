@@ -67,7 +67,7 @@ export default class pswd_userID extends Component
         {
             
             var data = {
-                "email": this.state.userName
+                email: this.state.userName
             }
 
             //Calls the post method to retrive the token and validate username and password
@@ -156,7 +156,8 @@ export default class pswd_userID extends Component
             <div className="signup_body">
                 <div className="signup_left pswd_overflow">
                     
-                    <h2>Frequently asked Question</h2>
+                    <h4>Password Security</h4>
+                    <p>You are responsible for protecting your own password. Set your password upon your own disgressio</p>
                         
                 </div>
 
@@ -181,10 +182,10 @@ export default class pswd_userID extends Component
                     </div>
                 </div>
                 <Recaptcha
-                ref={ ref => this.recaptcha = ref }
-                //**************************************************DANGER remove site key to saftey *********************************************************************
-                sitekey="6LdhWNsUAAAAAKIeVaOGdY3HCKy5Siva9emmZDl6"
-                onResolved={ this.onResolved } />
+                    ref={ ref => this.recaptcha = ref }
+                    //**************************************************DANGER remove site key to saftey *********************************************************************
+                    sitekey="6LdhWNsUAAAAAKIeVaOGdY3HCKy5Siva9emmZDl6"
+                    onResolved={ this.onResolved } />
             </div>
         )
     }

@@ -37,7 +37,7 @@
 .search_home_main_header
 {
     width: 100%;
-    height: 60%;
+    height: 50%;
     display: flex;
     background: cadetblue;
 
@@ -45,7 +45,7 @@
 
 .search_home_main_header_left
 {
-    width: 100%;
+    width: 50%;
     height: 80%;
     padding: 3%;
 }
@@ -65,7 +65,7 @@
 .search_home_main_header_small
 {
     width: 100%;
-    height: 40%;
+    height: 50%;
     display: flex;
 }
 
@@ -184,7 +184,6 @@
     width: 100vw;
     height: 100vh;
     display: flex;
-    overflow-x: hidden;
 }
 
 .caresoleWrapper
@@ -194,15 +193,18 @@
     flex-wrap: wrap;
     margin-left: 5%;
     margin-right: 5%;
-    overflow-wrap: unset;
+    overflow-y: hidden;
     transition: height 1.15s;
 
 }
 
 .contentWraper
 {
-    width: 15.6%;
-    margin: .5%;
+    width: 250px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     height: auto;
     display: inline-block;
     position: relative;
@@ -300,6 +302,7 @@ nav
 #similar
 {
     display: none;
+    flex-wrap: wrap;
     transition-timing-function: ease-in-out
 }
 
@@ -368,7 +371,6 @@ nav
 .caresoleImage_description
 {
     position: absolute;
-    top: 50%;
     bottom: 3px;
     left: 0;
     right: 0;
@@ -436,6 +438,9 @@ nav
     width: 100vw;
 }
 
+.caresole{
+    display: inline-flex;
+}
 
 .caresole_section_image_desc
 {
@@ -517,4 +522,25 @@ nav
 {
     width: 100%;
     text-align: center;
+}
+
+.contentWraperSimilar
+{
+    width: 150px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.mainContaineerImg
+{
+    width: 300px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 5%;
+    -webkit-box-shadow: -15px 10px 29px -10px rgba(0,0,0,0.62);
+-moz-box-shadow: -15px 10px 29px -10px rgba(0,0,0,0.62);
+box-shadow: -15px 10px 29px -10px rgba(0,0,0,0.62);
+
 }

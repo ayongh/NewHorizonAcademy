@@ -9,7 +9,6 @@ import { Icon } from 'react-icons-kit'
 
 import axios from 'axios'
 import {API_URL} from '../globalVariable'
-
 export default class caresole extends Component 
 {
     constructor(prop)
@@ -21,6 +20,11 @@ export default class caresole extends Component
             classes:null,
             class:null,
 
+            likeList:null,
+
+            ratingList:null,
+            
+            recomendationSimilar:null,
             sectionContent:null
         }
     }
@@ -44,6 +48,18 @@ export default class caresole extends Component
 
             }
         })
+
+        var data={
+            classID:value._id
+        }
+        axios.post(API_URL+"/recomendation/content",data,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.data.message.length>0)
+            {
+                this.setState({
+                    recomendationSimilar:res.data.message
+                })
+            }
+        })
     }
     
     componentDidMount()
@@ -56,72 +72,73 @@ export default class caresole extends Component
                 })
             }
         })
+
+        axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {
+                this.setState({
+                    ratingList:res.data.message
+                })
+            }
+
+        }) 
     }
 
     RenderLikeButton(val)
     {
-        var LikeList= JSON.parse( localStorage.getItem("userLikes"))
-        var flag = false;
-        var likeButton;
+        var found = false;
 
-        if(LikeList !== undefined && LikeList !== null)
+        if(this.state.ratingList != null)
         {
-            for(var i = 0; i < LikeList.length; i++)
-            {
-                if(val._id === LikeList[i])
+            this.state.ratingList.forEach(element => {
+                console.log(element.classID)
+                if(element.classID === val._id)
                 {
-                    flag = true;
-                    break
+                    if(element.rating > 0)
+                    {
+                        found=true
+                    }
                 }
-            }
-
+            });
         }
-        
-        if(flag)
-        {
-            likeButton =  <Icon className="popup_movie_btn" style={{color:"green"}} id={"like"+val._id} size={40} icon={buttonCheck} onClick={() =>this.LikeAction(val._id)}></Icon>
 
+        if(found=== true)
+        {
+            return <Icon className="popup_movie_btn" id={"like"+val._id} size={40} style={{color:"green"}} icon={buttonCheck} onClick={() =>this.LikeAction(val._id, this.id)} ></Icon>
         }
         else
         {
-            likeButton =  <Icon className="popup_movie_btn" id={"like"+val._id} size={40} icon={buttonCheck} onClick={() =>this.LikeAction(val._id)}></Icon>
+            return <Icon className="popup_movie_btn" id={"like"+val._id} size={40} icon={buttonCheck} onClick={() =>this.LikeAction(val._id, this.id)}></Icon>
         }
-
-        return likeButton
 
     }
 
     RenderdisLikeButton(val)
     {
-        var LikeList= JSON.parse( localStorage.getItem("userDisLike"))
-        var flag = false;
-        var likeButton;
+        var found = false;
 
-        if(LikeList !== undefined && LikeList !== null)
+        if(this.state.ratingList != null)
         {
-            for(var i = 0; i < LikeList.length; i++)
-            {
-                if(val._id === LikeList[i])
+            this.state.ratingList.forEach(element => {
+                console.log(element.classID)
+                if(element.classID === val._id)
                 {
-                    flag = true;
-                    break
+                    if(element.rating < 0)
+                    {
+                        found=true
+                    }
                 }
-            }
-
+            });
         }
-        
-        if(flag)
-        {
-            likeButton =  <Icon className="popup_movie_btn" style={{color:"red"}} id={"dislike"+val._id} size={40} icon={buttonClose} onClick={() =>this.disLikeAction(val._id)}></Icon>
 
+        if(found=== true)
+        {
+            return  <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} style={{color:"red"}} onClick={() =>this.disLikeAction(val._id, this.id)}></Icon>
         }
         else
         {
-            likeButton = <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} onClick={() =>this.disLikeAction(val._id)}></Icon>
-
-        }
-
-        return likeButton
+            return  <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} onClick={() =>this.disLikeAction(val._id, this.id)}></Icon>
+        }    
     }
 
 
@@ -136,7 +153,7 @@ export default class caresole extends Component
             document.getElementById("btnSection").style.borderBottom="solid"
             document.getElementById("btnSimilar").style.borderBottom="none"
 
-            document.getElementById("section").style.display = "block"
+            document.getElementById("section").style.display = "inline-flex"
             document.getElementById("similar").style.display = "none"
         }
 
@@ -145,7 +162,7 @@ export default class caresole extends Component
             document.getElementById("btnSection").style.borderBottom="none"
             document.getElementById("btnSimilar").style.borderBottom="solid"
             document.getElementById("section").style.display = "none"
-            document.getElementById("similar").style.display = "block"
+            document.getElementById("similar").style.display = "inline-flex"
         }
     }
 
@@ -165,12 +182,9 @@ export default class caresole extends Component
                             <h3>{val.name}</h3>
                             <p>{val.description}</p>
                             <div className="popup_action">
-                                
                                 {this.RenderLikeButton(val)}
                                 {this.RenderdisLikeButton(val)}
                                 <Icon className="popup_movie_btn" id={"add"+val._id} size={40} icon={buttonAdd} onClick={()=>this.open(val)}></Icon>
-
-
                             </div>
                         </div>      
                     </div>  
@@ -181,13 +195,68 @@ export default class caresole extends Component
         return classesElement;
     }
 
+    similarMovieBotton(value)
+    {
+        this.setState
+        ({
+            class:value
+        })
+        
+        axios.get(API_URL+'/course/findSection/'+value._id,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{ 
+            if(res.status === 200)
+            {
+                localStorage.setItem("video", JSON.stringify( res.data.data));
+                localStorage.setItem(this.state.class._id, JSON.stringify( res.data.data));
+                await this.setState({
+                    open:true,
+                    sectionContent: res.data
+                })
+
+            }
+        })
+
+        var data={
+            classID:value._id
+        }
+        axios.post(API_URL+"/recomendation/content",data,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.data.message.length>0)
+            {
+                this.setState({
+                    recomendationSimilar:res.data.message
+                })
+            }
+        })
+    }
+
+    getSimilarclass()
+    {
+        var similarContentElement
+
+        if(this.state.recomendationSimilar !== null)
+        {
+            similarContentElement = this.state.recomendationSimilar.map((val,index) =>
+            {
+                return(
+                    <div className="contentWraperSimilar" key={index} onClick={() =>this.similarMovieBotton(val)}>
+                        <img className="caresoleImage" src={val.thumbnail} alt={'apple'}/>
+                        <h3>{val.name}</h3>
+                    </div>
+                )
+
+            })
+            
+        }
+        
+        return similarContentElement
+        
+    }
+
     getModelEpisodes()
     {
         const episodes = this.state.sectionContent
         var episodeElement
 
-       
-        if (episodes !== null)
+        if (episodes !== null && episodes.data.length > 0)
         {
             episodeElement = episodes.data.map( (val, index) => {
                 return (
@@ -204,55 +273,99 @@ export default class caresole extends Component
                 )
             }) 
         }
+        else
+        {
+            return(
+                <div className="noepisode">
+                    <p>No video found for this class</p>
+                </div>
+            )
+        }
 
         return episodeElement;
     }
 
     getModelImage()
     {
-        return(
-            <div className="caresole_image_wrapper_container">
-                <img className="popup_image" src={this.state.class.thumbnail} alt={'apple'}/>
-                <Link to={{ pathname: "/watch/" + this.state.sectionContent.data[0]._id, state:{classID: this.state.class._id}}}>
+
+        if(this.state.sectionContent !== null && this.state.sectionContent.data.length > 0)
+        {
+            return(
+                <div className="caresole_image_wrapper_container">
+                    <img className="popup_image" src={this.state.class.thumbnail} alt={'apple'}/>
+                    <Link to={{ pathname: "/watch/" + this.state.sectionContent.data[0]._id, state:{classID: this.state.class._id}}}>
+                        <div className="popup_image_description">
+                            <Icon className="popup_movie_btn" size={150} icon={buttonCheck}></Icon>
+                        </div>
+                    </Link>
+                    
+                </div>
+            )
+        }
+        else
+        {
+            return(
+                <div className="caresole_image_wrapper_container">
+                    <img className="popup_image" src={this.state.class.thumbnail} alt={'apple'}/>
                     <div className="popup_image_description">
                         <Icon className="popup_movie_btn" size={150} icon={buttonCheck}></Icon>
                     </div>
-                </Link>
-                
-            </div>
-        )
-        
+                </div>
+            )
+        }
     }
 
-    LikeAction( classID)
+    
+    LikeAction( classID, componentID)
     {
         var payload= {
             classID: classID
         }
         
+        var likeID = "like"+classID
+        var dislikeID = "dislike"+classID
+
         axios.post(API_URL+'/course/like', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
             if(res.status === 200)
             {
-                localStorage.setItem("userLikes", JSON.stringify( res.data.data.like))
-                localStorage.setItem("userDisLike",JSON.stringify( res.data.data.dislike))
-                var likeID= "like"+classID
                 document.getElementById(likeID).style.color = "green"
-            }    
+                document.getElementById(dislikeID).style.color = "white"
+
+            }
+            else
+            {
+                document.getElementById(likeID).style.color = "green"
+                document.getElementById(dislikeID).style.color = "white"
+            }
+    
         }) 
     }
 
-    disLikeAction( classID)
+    disLikeAction( classID, componentID)
     {
-        console.log(classID)
         var payload= {
             classID: classID
         }
         
+        var likeID = "like"+classID
+        var dislikeID = "dislike"+classID
+
         axios.post(API_URL+'/course/dislike', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
-            console.log(res.data)
+            if (res.status === 200)
+            {
+                document.getElementById(likeID).style.color = "white"
+                document.getElementById(dislikeID).style.color = "red"
+            }
+            else{
+                document.getElementById(likeID).style.color = "white"
+                document.getElementById(dislikeID).style.color = "red"
+            }
     
         }) 
     }
+
+    
+
     getModelContent()
     {
         if(this.state.open)
@@ -287,10 +400,7 @@ export default class caresole extends Component
                                         </section>
 
                                         <section id="similar">
-                                            <div className="contentWraper">
-                                                <img className="caresoleImage" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg" alt={'apple'}/>
-                                                <h3>Similar</h3>
-                                            </div>
+                                            {this.getSimilarclass()}
                                         </section>
                                     </div>
                                 
@@ -302,17 +412,23 @@ export default class caresole extends Component
                 </div>
             )
         }
+        else
+        {
+            return(
+                <div>
+                    <h3>No content found with such name</h3>
+                </div>
+            )
+        }
     }
-
 
     render() {
         const { open } = this.state;        
-
         return (
             <div>
                 <h2 className="CaresoleCategorie">{this.props.categorie}</h2>
                 <div className="caresoleWrapper">
-                    <div className="caresole">
+                    <div className="caresole dragscroll">
                         {this.getImageElement()}
                     </div>
                 </div>

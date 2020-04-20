@@ -32,14 +32,18 @@ export default class HomeMainPage extends Component
         }
 
         axios.post(API_URL+"/recomendation/collaborative",data,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
-            console.log(res.data)
-            if(res.data.message.length>0)
+
+            if(res.status === 200)
             {
-                this.setState({
-                    maincontent:res.data.mainContent,
-                    classes:res.data.message
-                })
+                if(res.data.message.length>0)
+                {
+                    this.setState({
+                        maincontent:res.data.mainContent,
+                        classes:res.data.message
+                    })
+                }
             }
+            
         })
 
         axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{

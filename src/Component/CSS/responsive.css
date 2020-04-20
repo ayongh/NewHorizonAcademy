@@ -150,7 +150,16 @@
         height: auto;
     }
     
-        /* video player */
+    .caresoleImage_episode
+    {
+        width: 100px;
+    }
+
+    .episode_link
+    {
+        width: 100px;
+    }
+    /* video player */
 
 }
   

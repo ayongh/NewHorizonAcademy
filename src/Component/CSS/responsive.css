@@ -76,8 +76,8 @@
 
     .mainContaineerImg
     {
-        margin-top: 5%;
-        margin-left: 10%;
+        margin-top: 10%;
+        margin-left: 15%;
     }
 
     .search_home_main_header_left
@@ -153,6 +153,7 @@
     .caresoleImage_episode
     {
         width: 100px;
+        height: 150px;
     }
 
     .episode_link

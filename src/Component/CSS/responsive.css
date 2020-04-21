@@ -162,3 +162,12 @@
     /* video player */
 
 }
+
+
+@media only screen and  (max-width: 13400px)
+{
+    .mainContaineerImg
+    {
+        width: 250px;
+    }
+}

@@ -175,6 +175,7 @@
     width: 100vw;
     height: 100vh;
     display: flex;
+    z-index: 2;
 }
 
 .caresoleWrapper
@@ -463,6 +464,7 @@ nav
 
 .contentWraper_episode_content
 {
+    z-index: 2;
     display: flex;
     margin-top:10px;
     margin-bottom:10px;

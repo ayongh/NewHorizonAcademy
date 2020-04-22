@@ -95,7 +95,7 @@ class sidemenu extends React.Component {
         }
         open={this.state.sidebarOpen}
         onSetOpen={this.onSetSidebarOpen}
-        styles={{ sidebar: {background: "white", padding:"50px", width:"auto",vzIndex:10001 } }}
+        styles={{ sidebar: {background: "white", padding:"50px", width:"auto",vzIndex:10001,height:"100%" } }}
       >
         <button className="float_btn" onClick={() => this.onSetSidebarOpen(true)}>
           <Icon size={30} className="MenuIcon" icon={ic_sort}/>

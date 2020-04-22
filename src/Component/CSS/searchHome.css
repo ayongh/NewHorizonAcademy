@@ -136,6 +136,7 @@
 
 .float_btn
 {
+    z-index: 1000;
     position: fixed;
     background-color: rgba(41, 46, 38, 0.9);
     background: rgba(41, 46, 38, 0.9);

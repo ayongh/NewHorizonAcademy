@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import {API_URL} from '../globalVariable'
+import {Link} from 'react-router-dom'
 
 import {buttonCheck} from 'react-icons-kit/metrize/buttonCheck'
 import {buttonAdd} from 'react-icons-kit/metrize/buttonAdd'
@@ -19,7 +20,9 @@ export default class HomeMainPage extends Component
             class:null,
 
             ratingList:null,
+            recomendationSimilar:null,
 
+            sectionContent:null,
             maincontent:null
         }
     }
@@ -39,7 +42,37 @@ export default class HomeMainPage extends Component
                 {
                     this.setState({
                         maincontent:res.data.mainContent,
+                        class:res.data.mainContent,
                         classes:res.data.message
+                    })
+
+                    axios.get(API_URL+'/course/findSection/'+res.data.mainContent._id,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{ 
+                        if(res.status === 200)
+                        {
+                            localStorage.setItem("video", JSON.stringify( res.data.data));
+                            localStorage.setItem(this.state.class._id, JSON.stringify( res.data.data));
+                            await this.setState({
+                                sectionContent: res.data
+                            })
+            
+                        }
+                    })
+
+                    var data={
+                        classID:res.data.mainContent._id
+                    }
+                    
+                    axios.post(API_URL+"/recomendation/content",data,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+                        if(res.status === 200)
+                        {
+                            if(res.data.message.length>0)
+                            {
+                                this.setState({
+                                    recomendationSimilar:res.data.message
+                                })
+                            }
+                        }
+                        
                     })
                 }
             }
@@ -56,6 +89,120 @@ export default class HomeMainPage extends Component
 
         }) 
 
+    }
+
+    changeNav(id)
+    {
+        if(id === "btnSection")
+        {
+            document.getElementById("btnSection").style.borderBottom="solid"
+            document.getElementById("btnSimilar").style.borderBottom="none"
+
+            document.getElementById("section").style.display = "inline-flex"
+            document.getElementById("similar").style.display = "none"
+        }
+
+        if(id==="btnSimilar")
+        {
+            document.getElementById("btnSection").style.borderBottom="none"
+            document.getElementById("btnSimilar").style.borderBottom="solid"
+            document.getElementById("section").style.display = "none"
+            document.getElementById("similar").style.display = "inline-flex"
+        }
+    }
+
+    similarMovieBotton(value)
+    {
+
+        this.setState
+        ({
+            maincontent:value
+        })
+
+        axios.get(API_URL+'/course/findSection/'+value._id,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{ 
+            if(res.status === 200)
+            {
+                console.log(res.data)
+                localStorage.setItem("video", JSON.stringify( res.data.data));
+                localStorage.setItem(this.state.class._id, JSON.stringify( res.data.data));
+                this.setState({
+                    sectionContent: res.data
+                })
+
+            }
+        })
+
+        var data={
+            classID:value._id
+        }
+        axios.post(API_URL+"/recomendation/content",data,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.data.message.length>0)
+            {
+                this.setState({
+                    recomendationSimilar:res.data.message
+                })
+            }
+        })
+
+        
+    }
+
+
+    getModelEpisodes()
+    {
+        const episodes = this.state.sectionContent
+        var episodeElement
+
+        if (episodes !== null && episodes.data.length > 0)
+        {
+            episodeElement = episodes.data.map( (val, index) => {
+                return (
+                    <div key= {val._id} className="contentWraper_episode_content">
+                        <Link to={{pathname:"/watch/" + val._id, state:{classID: this.state.class._id}}} className="episode_link">
+                            <img className="caresoleImage_episode" src={val.thumbnail} alt={'apple'}/>
+                        </Link>
+
+                        <div className="caresole_episode_desc">
+                            <h2 className="noMargin nohref">{val.name}</h2>
+                            <p className="noMargin nohref">Episode {index+1}</p>
+                        </div>
+                    </div>
+                )
+            }) 
+        }
+        else
+        {
+            return(
+                <div className="noepisode">
+                    <p>No video found for this class</p>
+                </div>
+            )
+        }
+
+        return episodeElement;
+    }
+
+    getSimilarclass()
+    {
+        var similarContentElement
+
+        if(this.state.recomendationSimilar !== null)
+        {
+            similarContentElement = this.state.recomendationSimilar.map((val,index) =>
+            {
+                return(
+                    <div className="contentWraperSimilar" key={index} onClick={() =>this.similarMovieBotton(val)}>
+                        <img className="caresoleImage" src={val.thumbnail} alt={'apple'}/>
+                        <h3>{val.name}</h3>
+                    </div>
+                )
+
+            })
+            
+        }
+        
+        return similarContentElement
+        
     }
 
     getImageElement()
@@ -76,9 +223,9 @@ export default class HomeMainPage extends Component
                             <div className="popup_action">
                                 {this.RenderLikeButton(val)}
                                 {this.RenderdisLikeButton(val)}
-                                <Icon className="popup_movie_btn" id={"add"+val._id} size={40} icon={buttonAdd} onClick={()=>this.open(val)}></Icon>
+                                <a href= "#topid"><Icon className="popup_movie_btn" id={"add"+val._id} size={40} icon={buttonAdd} onClick={()=>this.similarMovieBotton(val)}></Icon></a>
                             </div>
-                        </div>      
+                        </div>    
                     </div>  
                 )
             }) 
@@ -205,11 +352,26 @@ export default class HomeMainPage extends Component
                         </div>
                         {this.RenderLikeButton(this.state.maincontent)}
                         {this.RenderdisLikeButton(this.state.maincontent)}
+
+                        <div className="popup_content_wraper">
+                            <nav>
+                                <button id="btnSection" onClick={()=>this.changeNav("btnSection")} href="#section">Section <span id="spanSection"></span></button>
+                                <button id="btnSimilar" onClick={()=>this.changeNav("btnSimilar")} href="#similar">Similar Classes <span id="spanSimilar"></span></button>
+                            </nav>
+
+                            <div className="popupSectionContent">
+                                <section id="section" className="Episodes">
+                                    { this.getModelEpisodes()}
+                                </section>
+
+                                <section id="similar">
+                                    {this.getSimilarclass()}
+                                </section>
+                            </div>
+                        
+                        </div>  
                     </div>
-
-                    
                 </div>
-
             )
         }
     }
@@ -218,7 +380,7 @@ export default class HomeMainPage extends Component
     {
         return (
 
-        <div className="search_home_main_container">
+        <div className="search_home_main_container" id="topid">
             {this.getMainContentElement()}
 
             <div className="search_home_main_header_small">

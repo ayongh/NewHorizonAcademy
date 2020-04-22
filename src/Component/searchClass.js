@@ -344,7 +344,6 @@ export default class caresole extends Component
 
     getSimilarclass()
     {
-        console.log(this.state.recomendationSimilar)
         var similarContentElement
 
         if(this.state.recomendationSimilar !== null)

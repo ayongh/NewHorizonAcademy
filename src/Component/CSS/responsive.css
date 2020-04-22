@@ -172,9 +172,8 @@
 
 @media only screen and  (max-width: 13400px)
 {
-    .mainContaineerImg
+    .caresoleImage_episode
     {
-        width: 250px;
-        height: 300px;
+        height: intrinsic;
     }
 }

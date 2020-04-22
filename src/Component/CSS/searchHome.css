@@ -137,7 +137,6 @@
 .float_btn
 {
     position: fixed;
-    z-index: 10000;
     background-color: rgba(41, 46, 38, 0.9);
     background: rgba(41, 46, 38, 0.9);
     color:white;    
@@ -528,6 +527,7 @@ nav
 .mainContaineerImg
 {
     width: 300px;
+    height: 420px;
     margin-top: 1%;
     margin-bottom: 1%;
     margin-left: 5%;

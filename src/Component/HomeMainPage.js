@@ -11,9 +11,9 @@ import { Icon } from 'react-icons-kit'
 
 export default class HomeMainPage extends Component 
 {
-    constructor(prop)
+    constructor(props)
     {
-        super(prop)
+        super(props)
 
         this.state = {
             classes:null,
@@ -30,6 +30,7 @@ export default class HomeMainPage extends Component
 
     componentDidMount()
     {
+        
         var data={
             classID:"aksdfjlks"
         }
@@ -158,7 +159,7 @@ export default class HomeMainPage extends Component
             episodeElement = episodes.data.map( (val, index) => {
                 return (
                     <div key= {val._id} className="contentWraper_episode_content">
-                        <Link to={{pathname:"/watch/" + val._id, state:{classID: this.state.class._id}}} className="episode_link">
+                        <Link to={{pathname:"/watch/" + val._id, state:{classID: this.state.class._id, prevPath: "/Homepage"}}} className="episode_link">
                             <img className="caresoleImage_episode" src={val.thumbnail} alt={'apple'}/>
                         </Link>
 

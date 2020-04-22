@@ -166,6 +166,24 @@
         height: auto;
     }
     /* video player */
+    .Video_container
+    {
+        display: inline;
+    }
+
+    .video_warpper
+    {
+        width: 100%;
+    }
+    .react-player
+    {
+        width: 100%;
+    }
+
+    .NextVideo_container_wrapper
+    {
+        width: 100%;
+    }
 
 }
 
@@ -176,4 +194,6 @@
     {
         height: intrinsic;
     }
+
+    
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactPlayer from 'react-player'
 import { Icon } from 'react-icons-kit'
+import {arrowLeft2} from 'react-icons-kit/icomoon/arrowLeft2'
 import {buttonCheck} from 'react-icons-kit/metrize/buttonCheck'
 
 
@@ -22,7 +23,8 @@ class video extends Component
 
             playing: false,
             url: null,
-            control:true
+            control:true,
+            videowidth: '80%'
         }
     }
 
@@ -38,6 +40,16 @@ class video extends Component
                 })
             }
         });
+
+        if(window.innerWidth<=640)
+        {
+            this.setState({
+                videowidth:"100%"
+            })
+        }
+        
+        console.log(this.props)
+
     }
 
     handleminimize=()=>
@@ -56,7 +68,7 @@ class video extends Component
 
     onEnded=()=>
     {
-        alert("on END")
+        
     }
 
     handleProgress =(a)=>
@@ -154,12 +166,19 @@ class video extends Component
 
     render()
     {
-        this.getImageBlobURL()
+        var returback="/Homepage"
+        console.log(this.props.location.state.prevPath)
+        if(this.props.location.state.prevPath !== undefined)
+        {
+            returback = this.props.location.state.prevPath
+        }
+
         return (
             <div className="Video_container" >
                 <div className="video_warpper" onContextMenu={(e)=> e.preventDefault()}>
-
+                    <a href={returback} className="videoBackButton"><Icon className="videobackbtn" size={40} icon={arrowLeft2}> </Icon> <span class="videobackHint">Back</span></a>
                     <ReactPlayer 
+                        id="reactplayyer"
                         url= {this.state.url}
                         className='react-player'
                         pip={false}
@@ -171,11 +190,9 @@ class video extends Component
                         onDuration={this.handleDuration}
                         onPause ={this.handlePause}
                         onPlay= {this.handleonplay}
-                        width='80%'
-                        height='100%'
-
                         onEnded={this.onEnded}
-            
+                        width = {this.state.videowidth}
+                        height = "100%"
                         config={{ file: {
                             attributes: {
                                 controlsList: 'nodownload'

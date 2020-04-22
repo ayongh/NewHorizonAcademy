@@ -87,3 +87,27 @@
     width: 100%;
     text-align: center;
 }
+
+.videoBackButton
+{
+    font-size: medium;
+    color:white;
+    z-index: 1000;
+    position: absolute;
+    margin-top: 2%;
+    margin-left: 2%;
+
+}
+
+.videobackHint
+{
+    display: none;
+    transition: all 2s;
+    font-size: 100;
+}
+
+.videoBackButton:hover .videobackHint:hover
+{
+    display: inline;
+    transform: scale(1.05)
+}

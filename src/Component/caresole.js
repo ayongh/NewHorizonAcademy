@@ -261,7 +261,7 @@ export default class caresole extends Component
             episodeElement = episodes.data.map( (val, index) => {
                 return (
                     <div key= {val._id} className="contentWraper_episode_content">
-                        <Link to={{pathname:"/watch/" + val._id, state:{classID: this.state.class._id}}} className="episode_link">
+                        <Link to={{pathname:"/watch/" + val._id, state:{classID: this.state.class._id, prevPath:"/browse/movie"}}} className="episode_link">
                             <img className="caresoleImage_episode" src={val.thumbnail} alt={'apple'}/>
                         </Link>
 
@@ -287,13 +287,13 @@ export default class caresole extends Component
 
     getModelImage()
     {
-
+        console.log(this.props)
         if(this.state.sectionContent !== null && this.state.sectionContent.data.length > 0)
         {
             return(
                 <div className="caresole_image_wrapper_container">
                     <img className="popup_image" src={this.state.class.thumbnail} alt={'apple'}/>
-                    <Link to={{ pathname: "/watch/" + this.state.sectionContent.data[0]._id, state:{classID: this.state.class._id}}}>
+                    <Link to={{ pathname: "/watch/" + this.state.sectionContent.data[0]._id, state:{classID: this.state.class._id, prevPath:"/browse/movie"}}}>
                         <div className="popup_image_description">
                             <Icon className="popup_movie_btn" size={150} icon={buttonCheck}></Icon>
                         </div>

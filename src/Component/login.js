@@ -78,10 +78,13 @@ class login extends Component
         var alert = null;
         if(this.state.safaribrowser === true)
         {alert =  <div class="alert warning" id="alert"> <span class="closebtn" onClick={()=>this.closealert()}>&times;</span> <strong>Warning!</strong> Please turn off the cookie blocker while using this application. to turn off the cookie blocker follow the instruction below 
+            <br/><strong>Iphone</strong>
             <ol>
-                <li>Setting</li>
-                <li>privacy</li>
-                <li>turn off the preserve block</li>
+                <li>Setting > Safari > Prevent Cross-Site Tracking (Turn this setting off) </li>
+            </ol>
+            <br/><strong>Laptop</strong>
+            <ol>
+                <li>Safari > Preferences > Privacy > prevent cross-site tracking (uncheck this box) </li>
             </ol> 
       </div>}
         

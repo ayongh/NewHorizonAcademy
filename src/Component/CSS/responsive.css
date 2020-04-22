@@ -160,6 +160,11 @@
     {
         width: 100px;
     }
+
+    .login_body
+    {
+        height: auto;
+    }
     /* video player */
 
 }

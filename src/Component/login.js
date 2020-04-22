@@ -19,6 +19,8 @@ class login extends Component
             password:null,
             userError: null,
 
+            safaribrowser:false,
+
             value: '' 
             
         }
@@ -31,6 +33,18 @@ class login extends Component
         })
     }
     
+    componentDidMount()
+    {
+        var isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 && navigator.userAgent && navigator.userAgent.indexOf('CriOS') === -1 &&navigator.userAgent.indexOf('FxiOS') === -1;
+        if (isSafari) 
+        {
+            this.setState({
+                safaribrowser:true
+            })
+        }
+    }
+
+
     handleSubmit = (e)=>
     {
         e.preventDefault();
@@ -53,6 +67,25 @@ class login extends Component
 
         }
 
+    }
+
+    closealert(){
+        document.getElementById("alert").style.display="none"
+    }
+
+    safariAlert()
+    {
+        var alert = null;
+        if(this.state.safaribrowser === true)
+        {alert =  <div class="alert warning" id="alert"> <span class="closebtn" onClick={()=>this.closealert()}>&times;</span> <strong>Warning!</strong> Please turn off the cookie blocker while using this application. to turn off the cookie blocker follow the instruction below 
+            <ol>
+                <li>Setting</li>
+                <li>privacy</li>
+                <li>turn off the preserve block</li>
+            </ol> 
+      </div>}
+        
+        return alert
     }
 
     //When recaptcha is resolved
@@ -135,7 +168,10 @@ class login extends Component
             
 
         return (
-            <div className="login_body">
+            <div className="loginEntire">
+                {this.safariAlert()}
+
+                <div className="login_body">
                 <div className="login_left">
                     <div className="login_left_outer_container">
                         <h3>Create New User</h3>
@@ -177,7 +213,9 @@ class login extends Component
                 //**************************************************DANGER remove site key to saftey *********************************************************************
                 sitekey="6LdhWNsUAAAAAKIeVaOGdY3HCKy5Siva9emmZDl6"
                 onResolved={ this.onResolved } />
+                </div>
             </div>
+            
         )//return
     }  
 }

@@ -1,4 +1,4 @@
-@media only screen and (max-width: 375px) {
+@media only screen and (max-width: 1242px) {
 
     .login_body
     {
@@ -181,6 +181,11 @@
     }
 
     .NextVideo_container_wrapper
+    {
+        width: 100%;
+    }
+
+    .caresole_episode_desc
     {
         width: 100%;
     }

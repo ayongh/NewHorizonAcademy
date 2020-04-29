@@ -99,7 +99,7 @@ export default class HomeMainPage extends Component
             document.getElementById("btnSection").style.borderBottom="solid"
             document.getElementById("btnSimilar").style.borderBottom="none"
 
-            document.getElementById("section").style.display = "inline-flex"
+            document.getElementById("section").style.display = "block"
             document.getElementById("similar").style.display = "none"
         }
 

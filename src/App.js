@@ -10,7 +10,6 @@ import {
 import {connect} from 'react-redux'
 import {ActionUserIntialize} from './Action/userinfoAction'
 
-
 import './App.css';
 import './Component/CSS/login.css';
 import './Component/CSS/signup.css';
@@ -91,7 +90,6 @@ class App extends Component
             <Route  exact path="/pswdreset" component={UserID}/>
             <ProtectedRoute  exact path="/pswdreset/NewPswd" loggedIn={this.props.state.loginFlag} component={PasswordReset}/>         
       
-
             <Route  exact path="/" component={Login}/>
             <ProtectedRoute exact path="/browse/movie" loggedIn={this.props.state.login.loginFlag} component={Main_Browse_Show}/>
             <ProtectedRoute exact path="/search/movie" loggedIn={this.props.state.login.loginFlag} component={SearchClass}/>

@@ -123,7 +123,6 @@ export default class HomeMainPage extends Component
         axios.get(API_URL+'/course/findSection/'+value._id,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{ 
             if(res.status === 200)
             {
-                console.log(res.data)
                 localStorage.setItem("video", JSON.stringify( res.data.data));
                 localStorage.setItem(this.state.class._id, JSON.stringify( res.data.data));
                 this.setState({
@@ -222,9 +221,11 @@ export default class HomeMainPage extends Component
                             <h3>{val.name}</h3>
                             <p>{val.description}</p>
                             <div className="popup_action">
+                                <Icon className="popup_movie_btn" id={"liked"+val._id} size={40} style={{color:"green", display:"none"}} icon={buttonCheck} onClick={() =>this.removeLikeAction(val._id)} ></Icon>
+                                <Icon className="popup_movie_btn" id={"like"+val._id} size={40} style={{display:"none"}} icon={buttonCheck} onClick={() =>this.LikeAction(val._id)} ></Icon>
                                 {this.RenderLikeButton(val)}
-                                {this.RenderdisLikeButton(val)}
-                                <a href= "#topid"><Icon className="popup_movie_btn" id={"add"+val._id} size={40} icon={buttonAdd} onClick={()=>this.similarMovieBotton(val)}></Icon></a>
+
+                                <a href= "#topid" style={{color:"white"}}><Icon className="popup_movie_btn" id={"add"+val._id} size={40} icon={buttonAdd} onClick={()=>this.similarMovieBotton(val)}></Icon></a>
                             </div>
                         </div>    
                     </div>  
@@ -252,13 +253,26 @@ export default class HomeMainPage extends Component
             });
         }
 
+        var liked = "liked"+val._id
+        var like = "like"+val._id
+
         if(found=== true)
         {
-            return <Icon className="popup_movie_btn" id={"like"+val._id} size={40} style={{color:"green"}} icon={buttonCheck} onClick={() =>this.LikeAction(val._id, this.id)} ></Icon>
+            if(document.getElementById(liked) != null)
+            {
+                document.getElementById(liked).style.display="flex"
+                document.getElementById(like).style.display="none"
+
+            }
         }
         else
         {
-            return <Icon className="popup_movie_btn" id={"like"+val._id} size={40} icon={buttonCheck} onClick={() =>this.LikeAction(val._id, this.id)}></Icon>
+            if(document.getElementById(like) != null)
+            {
+                document.getElementById(like).style.display="flex"
+                document.getElementById(liked).style.display="none"
+
+            }
         }
 
     }
@@ -290,26 +304,39 @@ export default class HomeMainPage extends Component
         }    
     }
 
-    LikeAction( classID, componentID)
+    LikeAction( classID)
     {
         var payload= {
             classID: classID
         }
         
-        var likeID = "like"+classID
-        var dislikeID = "dislike"+classID
+        var like = "like"+classID
+        var liked = "liked"+classID
 
         axios.post(API_URL+'/course/like', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
             if(res.status === 200)
-            {
-                document.getElementById(likeID).style.color = "green"
-                document.getElementById(dislikeID).style.color = "white"
-
+            {  
+                document.getElementById(liked).style.display = "flex"
+                document.getElementById(like).style.display = "none"
             }
-            else
-            {
-                document.getElementById(likeID).style.color = "green"
-                document.getElementById(dislikeID).style.color = "white"
+    
+        }) 
+    }
+
+    removeLikeAction(classID)
+    {
+        var payload= {
+            classID: classID
+        }
+        
+        var like = "like"+classID
+        var liked = "liked"+classID
+
+        axios.post(API_URL+'/course/like/remove', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {  
+                document.getElementById(liked).style.display = "none"
+                document.getElementById(like).style.display = "flex"
             }
     
         }) 
@@ -351,8 +378,9 @@ export default class HomeMainPage extends Component
                         <div className="main_header_left_content">
                             <p>{this.state.maincontent.description}</p>
                         </div>
+                        <Icon className="popup_movie_btn" id={"liked"+this.state.maincontent._id} size={40} style={{color:"green", display:"none"}} icon={buttonCheck} onClick={() =>this.removeLikeAction(this.state.maincontent._id)} ></Icon>
+                        <Icon className="popup_movie_btn" id={"like"+this.state.maincontent._id} size={40} style={{color:"white",display:"none"}} icon={buttonCheck} onClick={() =>this.LikeAction(this.state.maincontent._id)} ></Icon>
                         {this.RenderLikeButton(this.state.maincontent)}
-                        {this.RenderdisLikeButton(this.state.maincontent)}
 
                         <div className="popup_content_wraper">
                             <nav>

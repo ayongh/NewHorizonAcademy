@@ -20,6 +20,7 @@ export default class caresole extends Component
             classes:null,
             class:null,
 
+            likeFunction:null,
             likeList:null,
 
             ratingList:null,
@@ -91,7 +92,6 @@ export default class caresole extends Component
         if(this.state.ratingList != null)
         {
             this.state.ratingList.forEach(element => {
-                console.log(element.classID)
                 if(element.classID === val._id)
                 {
                     if(element.rating > 0)
@@ -102,13 +102,26 @@ export default class caresole extends Component
             });
         }
 
+        var liked = "liked"+val._id
+        var like = "like"+val._id
+
         if(found=== true)
         {
-            return <Icon className="popup_movie_btn" id={"like"+val._id} size={40} style={{color:"green"}} icon={buttonCheck} onClick={() =>this.LikeAction(val._id, this.id)} ></Icon>
+            if(document.getElementById(liked) != null)
+            {
+                document.getElementById(liked).style.display="flex"
+                document.getElementById(like).style.display="none"
+
+            }
         }
         else
         {
-            return <Icon className="popup_movie_btn" id={"like"+val._id} size={40} icon={buttonCheck} onClick={() =>this.LikeAction(val._id, this.id)}></Icon>
+            if(document.getElementById(like) != null)
+            {
+                document.getElementById(like).style.display="flex"
+                document.getElementById(liked).style.display="none"
+
+            }
         }
 
     }
@@ -120,7 +133,6 @@ export default class caresole extends Component
         if(this.state.ratingList != null)
         {
             this.state.ratingList.forEach(element => {
-                console.log(element.classID)
                 if(element.classID === val._id)
                 {
                     if(element.rating < 0)
@@ -133,11 +145,11 @@ export default class caresole extends Component
 
         if(found=== true)
         {
-            return  <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} style={{color:"red"}} onClick={() =>this.disLikeAction(val._id, this.id)}></Icon>
+            return  <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} style={{color:"red"}} onClick={() =>this.disLikeAction(val._id)}></Icon>
         }
         else
         {
-            return  <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} onClick={() =>this.disLikeAction(val._id, this.id)}></Icon>
+            return  <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} onClick={() =>this.disLikeAction(val._id)}></Icon>
         }    
     }
 
@@ -182,8 +194,9 @@ export default class caresole extends Component
                             <h3>{val.name}</h3>
                             <p>{val.description}</p>
                             <div className="popup_action">
+                                <Icon className="popup_movie_btn" id={"liked"+val._id} size={40} style={{color:"green", display:"none"}} icon={buttonCheck} onClick={() =>this.removeLikeAction(val._id)} ></Icon>
+                                <Icon className="popup_movie_btn" id={"like"+val._id} size={40} style={{display:"none"}} icon={buttonCheck} onClick={() =>this.LikeAction(val._id)} ></Icon>  
                                 {this.RenderLikeButton(val)}
-                                {this.RenderdisLikeButton(val)}
                                 <Icon className="popup_movie_btn" id={"add"+val._id} size={40} icon={buttonAdd} onClick={()=>this.open(val)}></Icon>
                             </div>
                         </div>      
@@ -251,6 +264,25 @@ export default class caresole extends Component
         
     }
 
+    removeLikeAction(classID)
+    {
+        var payload= {
+            classID: classID
+        }
+        
+        var like = "like"+classID
+        var liked = "liked"+classID
+
+        axios.post(API_URL+'/course/like/remove', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {  
+                document.getElementById(liked).style.display = "none"
+                document.getElementById(like).style.display = "flex"
+            }
+    
+        }) 
+    }
+
     getModelEpisodes()
     {
         const episodes = this.state.sectionContent
@@ -287,7 +319,6 @@ export default class caresole extends Component
 
     getModelImage()
     {
-        console.log(this.props)
         if(this.state.sectionContent !== null && this.state.sectionContent.data.length > 0)
         {
             return(
@@ -316,32 +347,27 @@ export default class caresole extends Component
     }
 
     
-    LikeAction( classID, componentID)
+    LikeAction( classID)
     {
         var payload= {
             classID: classID
         }
         
-        var likeID = "like"+classID
-        var dislikeID = "dislike"+classID
+        var like = "like"+classID
+        var liked = "liked"+classID
+
 
         axios.post(API_URL+'/course/like', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
             if(res.status === 200)
-            {
-                document.getElementById(likeID).style.color = "green"
-                document.getElementById(dislikeID).style.color = "white"
-
-            }
-            else
-            {
-                document.getElementById(likeID).style.color = "green"
-                document.getElementById(dislikeID).style.color = "white"
+            {  
+                document.getElementById(liked).style.display = "flex"
+                document.getElementById(like).style.display = "none"
             }
     
         }) 
     }
 
-    disLikeAction( classID, componentID)
+    disLikeAction( classID)
     {
         var payload= {
             classID: classID

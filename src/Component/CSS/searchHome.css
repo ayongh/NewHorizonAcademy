@@ -526,6 +526,7 @@ nav
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
+    transition: all 1s;
 }
 
 .mainContaineerImg
@@ -539,4 +540,9 @@ nav
     -moz-box-shadow: -15px 10px 29px -10px rgba(0,0,0,0.62);
     box-shadow: -15px 10px 29px -10px rgba(0,0,0,0.62);
 
+}
+
+.contentWraperSimilar:hover
+{
+    transform: scale(1.2);
 }

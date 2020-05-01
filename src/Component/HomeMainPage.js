@@ -147,6 +147,11 @@ export default class HomeMainPage extends Component
         
     }
 
+    imageload(id)
+    {
+        
+    }
+
 
     getModelEpisodes()
     {
@@ -159,7 +164,7 @@ export default class HomeMainPage extends Component
                 return (
                     <div key= {val._id} className="contentWraper_episode_content">
                         <Link to={{pathname:"/watch/" + val._id, state:{classID: this.state.class._id, prevPath: "/Homepage"}}} className="episode_link">
-                            <img className="caresoleImage_episode" src={val.thumbnail} alt={'apple'}/>
+                            <img id={"image"+val._id} className="caresoleImage_episode" onLoad={this.imageload("image"+val._id)} src={val.thumbnail} alt={'apple'}/>
                         </Link>
 
                         <div className="caresole_episode_desc">

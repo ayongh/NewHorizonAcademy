@@ -8,12 +8,17 @@ import {Actionlogin, ActionLoading, ActionError} from '../Action/loginAction'
 import {ActionUserIntialize} from '../Action/userinfoAction'
 import axios from 'axios'
 import {API_URL} from '../globalVariable'
+import cookie from 'react-cookies'
+
+
 
 class login extends Component
 {
+    
     constructor(props)
     {
         super(props)
+
         this.state = {
             username:null,
             password:null,
@@ -99,13 +104,13 @@ class login extends Component
             token:this.recaptcha.getResponse()
         }
 
-
         axios.post(API_URL+'/user/login/recaptcha', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{     
             if(res.status === 200)
             {
                 axios.post(API_URL+'/user/login', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{
                     if(res.status === 200)
-                    {
+                    {                    
+                        cookie.save('authToken', res.data.authToken)
                         localStorage.setItem("watchhistory", JSON.stringify( res.data.message.watchHistory))
                         this.props.Actionlogin()
                         this.props.ActionUserIntialize(res.data.message)

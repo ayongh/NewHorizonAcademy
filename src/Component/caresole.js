@@ -74,7 +74,7 @@ export default class caresole extends Component
             }
         })
 
-        axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+        axios.get(API_URL+'/course/listrating', { validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
             if(res.status === 200)
             {
                 this.setState({

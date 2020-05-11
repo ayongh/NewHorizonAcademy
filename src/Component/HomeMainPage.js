@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom'
 import {buttonCheck} from 'react-icons-kit/metrize/buttonCheck'
 import {buttonAdd} from 'react-icons-kit/metrize/buttonAdd'
 import {buttonClose} from 'react-icons-kit/metrize/buttonClose'
+import {cross} from 'react-icons-kit/metrize/cross'
 import { Icon } from 'react-icons-kit'
 
 
@@ -18,6 +19,7 @@ export default class HomeMainPage extends Component
         this.state = {
             classes:null,
             class:null,
+            watchHistoryclasses:null,
 
             ratingList:null,
             recomendationSimilar:null,
@@ -80,6 +82,19 @@ export default class HomeMainPage extends Component
             
         })
 
+
+        var watchHistorypayload= {
+            pagination: 20
+        }
+        axios.post(API_URL+'/render/class/watchHistory',watchHistorypayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+            if(res.status === 200)
+            {
+                this.setState({
+                    watchHistoryclasses:res.data.classes
+                })
+            }
+        })
+
         axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
             if(res.status === 200)
             {
@@ -114,7 +129,6 @@ export default class HomeMainPage extends Component
 
     similarMovieBotton(value)
     {
-
         this.setState
         ({
             maincontent:value
@@ -146,12 +160,6 @@ export default class HomeMainPage extends Component
 
         
     }
-
-    imageload(id)
-    {
-        
-    }
-
 
     getModelEpisodes()
     {
@@ -210,6 +218,43 @@ export default class HomeMainPage extends Component
         
     }
 
+    Renderwatchlistbutton(val)
+    {
+        if(this.state.watchHistoryclasses !== null)
+        {
+            var add = "add"+val._id
+            var remove = "remove"+val._id
+
+            var found =false;
+            this.state.watchHistoryclasses.map(element=>{
+                if(element._id === val._id)
+                {
+                   found = true
+                }
+            })
+
+            if(found=== true)
+            {
+                if(document.getElementById(remove) != null)
+                {
+                    document.getElementById(add).style.display="none"
+                    document.getElementById(remove).style.display="flex"
+
+                }
+            }
+            else
+            {
+                if(document.getElementById(add) != null)
+                {
+                    document.getElementById(add).style.display="flex"
+                    document.getElementById(remove).style.display="none"
+
+                }
+            }
+            
+        }  
+    }
+
     getImageElement()
     {
         const Classes = this.state.classes
@@ -219,20 +264,24 @@ export default class HomeMainPage extends Component
         if (Classes !== null)
         {
             classesElement = Classes.map( (val, index) => {
+                var newTag= val.tag.replace(",", " #")
                 return (
-                    <div key= {val._id} className="contentWraper">
+                    <div key= {val._id} className="new_contentWraper">
                         <img className="caresoleImage" id={val._id} onError={this.errorImag} src={val.thumbnail} alt={'apple'}/>
-                        <div className="caresoleImage_description">
-                            <h3>{val.name}</h3>
-                            <p>{val.description}</p>
-                            <div className="popup_action">
-                                <Icon className="popup_movie_btn" id={"liked"+val._id} size={40} style={{color:"green", display:"none"}} icon={buttonCheck} onClick={() =>this.removeLikeAction(val._id)} ></Icon>
-                                <Icon className="popup_movie_btn" id={"like"+val._id} size={40} style={{display:"none"}} icon={buttonCheck} onClick={() =>this.LikeAction(val._id)} ></Icon>
-                                {this.RenderLikeButton(val)}
-
-                                <a href= "#topid" style={{color:"white"}}><Icon className="popup_movie_btn" id={"add"+val._id} size={40} icon={buttonAdd} onClick={()=>this.similarMovieBotton(val)}></Icon></a>
+                        <div className="caresoleImage_description_wrapper">
+                            <div className="top_caresoleImage_description">
+                                <ion-icon name="caret-forward-circle-outline" style={{fontSize:"70px", color:'white', marginTop:"20%", cursor:"pointer"}} onClick={()=>this.similarMovieBotton(val)}></ion-icon>
+                            </div>                            
+                            <div className="description">
+                                <div className="bottom_caresoleImage_description">
+                                    <h3 className="caresole_title">{val.name}</h3>
+                                    <div className="tag_wrapper">
+                                        <i><p className="tag">#{newTag}</p></i>
+                                    </div>
+                                    <p>{val.description}</p>
+                                </div>
                             </div>
-                        </div>    
+                        </div>      
                     </div>  
                 )
             }) 
@@ -321,8 +370,14 @@ export default class HomeMainPage extends Component
         axios.post(API_URL+'/course/like', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
             if(res.status === 200)
             {  
-                document.getElementById(liked).style.display = "flex"
-                document.getElementById(like).style.display = "none"
+                
+                document.getElementById(liked).style.display="flex"
+                document.getElementById(like).style.display="none"
+                document.getElementById("message").innerHTML = "Sucessfully liked a class"
+                document.getElementById('notification').style.display="flex"
+                setTimeout(function(){ 
+                    document.getElementById('notification').style.display="none"
+                }, 3000);
             }
     
         }) 
@@ -340,36 +395,98 @@ export default class HomeMainPage extends Component
         axios.post(API_URL+'/course/like/remove', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
             if(res.status === 200)
             {  
-                document.getElementById(liked).style.display = "none"
-                document.getElementById(like).style.display = "flex"
-            }
-    
-        }) 
-    }
-
-    disLikeAction( classID, componentID)
-    {
-        var payload= {
-            classID: classID
-        }
+                document.getElementById(like).style.display="flex"
+                document.getElementById(liked).style.display="none"             
+                document.getElementById("message").innerHTML = "Class sucessfully disliked"
+                document.getElementById('notification').style.display="flex"
+                setTimeout(function(){ 
+                    document.getElementById('notification').style.display="none"
         
-        var likeID = "like"+classID
-        var dislikeID = "dislike"+classID
-
-        axios.post(API_URL+'/course/dislike', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
-            if (res.status === 200)
-            {
-                document.getElementById(likeID).style.color = "white"
-                document.getElementById(dislikeID).style.color = "red"
-            }
-            else{
-                document.getElementById(likeID).style.color = "white"
-                document.getElementById(dislikeID).style.color = "red"
+                }, 3000);
             }
     
         }) 
     }
 
+    addlist(val)
+    {
+        
+        var data={
+            classID:val._id
+        }
+
+        var add = "add"+val._id
+        var remove = "remove"+val._id
+
+        axios.post(API_URL+"/user/info/update/watchLater",data,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {
+                if(document.getElementById(remove) != null)
+                {
+                    document.getElementById(add).style.display="none"
+                    document.getElementById(remove).style.display="flex"
+
+                }
+                document.getElementById("message").innerHTML = "Class sucessfully add to the Watch List"
+                document.getElementById('notification').style.display="flex"
+                setTimeout(function(){ 
+                    document.getElementById('notification').style.display="none"
+                }, 3000);
+
+                var watchHistorypayload= {
+                    pagination: 20
+                }
+                axios.post(API_URL+'/render/class/watchHistory',watchHistorypayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            watchHistoryclasses:res.data.classes
+                        })
+                    }
+                })
+            }
+        })
+    }
+
+    removeList(val)
+    {
+        var data={
+            classID:val._id
+        }
+
+        var add = "add"+val._id
+        var remove = "remove"+val._id
+
+        axios.post(API_URL+"/user/info/update/watchLater/remove",data,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {
+                if(document.getElementById(add) != null)
+                {
+                    document.getElementById(add).style.display="flex"
+                    document.getElementById(remove).style.display="none"
+
+                }
+                document.getElementById("message").innerHTML = "Class sucessfully removed from the Watch List"
+                document.getElementById('notification').style.display="flex"
+                setTimeout(function(){ 
+                    document.getElementById('notification').style.display="none"
+                }, 3000);
+
+                var watchHistorypayload= {
+                    pagination: 20
+                }
+                axios.post(API_URL+'/render/class/watchHistory',watchHistorypayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            watchHistoryclasses:res.data.classes
+                        })
+                    }
+                })
+            }
+        })
+    }
+    
     getMainContentElement()
     {
         if(this.state.maincontent !=null)
@@ -383,12 +500,20 @@ export default class HomeMainPage extends Component
                         <div className="main_header_left_content">
                             <p>{this.state.maincontent.description}</p>
                         </div>
-                        <Icon className="popup_movie_btn" id={"liked"+this.state.maincontent._id} size={40} style={{color:"green", display:"none"}} icon={buttonCheck} onClick={() =>this.removeLikeAction(this.state.maincontent._id)} ></Icon>
-                        <Icon className="popup_movie_btn" id={"like"+this.state.maincontent._id} size={40} style={{color:"white",display:"none"}} icon={buttonCheck} onClick={() =>this.LikeAction(this.state.maincontent._id)} ></Icon>
-                        {this.RenderLikeButton(this.state.maincontent)}
+
+                        <div className="popup_action">
+
+                            <Icon className="popup_movie_btn" id={"liked"+this.state.maincontent._id} size={40} style={{color:"green", display:"none"}} icon={buttonCheck} onClick={() =>this.removeLikeAction(this.state.maincontent._id)} ></Icon>
+                            <Icon className="popup_movie_btn" id={"like"+this.state.maincontent._id} size={40} style={{color:"white",display:"none"}} icon={buttonCheck} onClick={() =>this.LikeAction(this.state.maincontent._id)} ></Icon>
+                            {this.RenderLikeButton(this.state.maincontent)}
+
+                            <Icon className="popup_movie_btn" id={"add"+this.state.maincontent._id} size={40} icon={buttonAdd} onClick={() =>this.addlist(this.state.maincontent)}></Icon>
+                            <Icon className="popup_movie_btn" id={"remove"+this.state.maincontent._id}  size={40} icon={cross} onClick={() =>this.removeList(this.state.maincontent)}></Icon>
+                            {this.Renderwatchlistbutton(this.state.maincontent)}
+                        </div>
 
                         <div className="popup_content_wraper">
-                            <nav>
+                            <nav style={{textAlign:"center"}}>
                                 <button id="btnSection" onClick={()=>this.changeNav("btnSection")} href="#section">Section <span id="spanSection"></span></button>
                                 <button id="btnSimilar" onClick={()=>this.changeNav("btnSimilar")} href="#similar">Similar Classes <span id="spanSimilar"></span></button>
                             </nav>
@@ -423,6 +548,10 @@ export default class HomeMainPage extends Component
                         {this.getImageElement()}
                     </div>
                 </div>
+            </div>
+
+            <div className="addedlistAlert" id="notification">
+                <p id="message">Sucessfully added to watch Later list</p>
             </div>
         </div>
 

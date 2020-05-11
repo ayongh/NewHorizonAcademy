@@ -5,30 +5,34 @@ import Icon from 'react-icons-kit';
 import {ic_sort} from 'react-icons-kit/md/ic_sort'
 import {API_URL} from '../globalVariable'
 
-
-import SearchHomeMain from './HomeMainPage'
-import Browse from './browse'
-import SearchClass from './searchClass'
+import AllBrowse from './allBrowseContent'
 
 import {Link} from "react-router-dom";
 
  
-class sidemenu extends React.Component {
+class allBrowseSideMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       sidebarOpen: false,
+      param:null,
       search:null,
       redirctLoginPage:false,
     };
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
  
+  
   onSetSidebarOpen(open) {
 
     this.setState({ sidebarOpen: open });
   }
 
+  componentDidMount(){
+      this.setState({
+        param : this.props.match.params.categorie
+      })
+  }
   logout()
   {
     //Calls the post method to retrive the token and validate username and password
@@ -52,24 +56,6 @@ class sidemenu extends React.Component {
       window.location.reload();
     }
 
-    let component
-    if(this.props.name === "HomeMainPage")
-    {
-      component = <SearchHomeMain/>
-    }
-    else if(this.props.name === "browse")
-    {
-      component = <Browse/>
-    }
-    else if(this.props.name === "allBrowser")
-    {
-      component = <allBrowse/>
-    }
-    else if(this.props.name === "search")
-    {
-      component = <SearchClass/>
-    }
-    
     return (
       <Sidebar 
         sidebar=
@@ -104,11 +90,10 @@ class sidemenu extends React.Component {
         <button className="float_btn" onClick={() => this.onSetSidebarOpen(true)}>
           <Icon size={30} className="MenuIcon" icon={ic_sort}/>
         </button>
-
-        {component}
+        <AllBrowse urlparam ={this.props.match.params.categorie}/>
       </Sidebar>
     );
   }
 }
  
-export default sidemenu;
+export default allBrowseSideMenu;

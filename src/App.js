@@ -26,6 +26,7 @@ import Filenotfound from './Component/fileNotfound';
 import UserID from './Component/pswd_userID';
 import SearchHome from './Component/serachHome';
 import SearchClass from './Component/searchClassMenu';
+import AllBrowseContent from './Component/allBrowseSideMenu'
 
 import Main_Browse_Show from './Component/main_browse_Show';
 import Loading from './Component/loading';
@@ -92,6 +93,7 @@ class App extends Component
       
             <Route  exact path="/" component={Login}/>
             <ProtectedRoute exact path="/browse/movie" loggedIn={this.props.state.login.loginFlag} component={Main_Browse_Show}/>
+            <ProtectedRoute exact path="/browse/movie/:categorie" loggedIn={this.props.state.login.loginFlag} component={AllBrowseContent}/>
             <ProtectedRoute exact path="/search/movie" loggedIn={this.props.state.login.loginFlag} component={SearchClass}/>
             <ProtectedRoute exact path="/Homepage" loggedIn={this.props.state.login.loginFlag} component={SearchHome}/>
             <ProtectedRoute exact path="/profile" loggedIn={this.props.state.login.loginFlag} component={UserProfile}/>

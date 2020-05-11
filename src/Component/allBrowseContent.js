@@ -10,7 +10,7 @@ import { Icon } from 'react-icons-kit'
 import axios from 'axios'
 import {API_URL} from '../globalVariable'
 
-export default class searchClass extends Component 
+export default class allBrowseContent extends Component 
 {
     constructor(prop)
     {
@@ -33,6 +33,53 @@ export default class searchClass extends Component
 
     componentDidMount()
     {
+        if(this.props.urlparam !== null)
+        {
+            if(this.props.urlparam === "popular")
+            {
+                var popularpayload= {
+                    pagination: 100
+                }
+                axios.post(API_URL+'/render/class/popular',popularpayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            classes:res.data
+                        })
+                    }
+                })
+            }
+            else if(this.props.urlparam === "newlyadded")
+            {
+                var newlyaddedpayload= {
+                    pagination: 100
+                }
+                axios.post(API_URL+'/render/class/newlyadded',newlyaddedpayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            classes:res.data
+                        })
+                    }
+                })
+            }
+            else
+            {
+                var healthpayload= {
+                    categorie: this.props.urlparam,
+                    pagination: 20
+                }
+                axios.post(API_URL+'/render/class/categorie',healthpayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            classes:res.data
+                        })
+                    }
+                })
+            }
+        }
+
         axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
             if(res.status === 200)
             {
@@ -122,7 +169,7 @@ export default class searchClass extends Component
         var classesElement
 
        
-        if (Classes !== null)
+        if (Classes !== null && Classes.length > 0)
         {
             classesElement = Classes.map( (val, index) => {
                 var newTag= val.tag.replace(",", " #")
@@ -149,13 +196,10 @@ export default class searchClass extends Component
         }
         else
         {
-            classesElement = 
-            
-                <div style={{width:"100%", textAlign:"center"}}>
-                    <p>Please search using title </p>
-                </div>
-            
+            classesElement = <div style={{width:"100%", textAlign:"center"}}><p>No content found </p></div>
         }
+
+        console.log(this.state.classes)
 
         return classesElement;
     }
@@ -473,23 +517,6 @@ export default class searchClass extends Component
         }
     }
 
-    handleChange = (e) =>
-    {
-        this.setState({
-            [e.target.id]: e.target.value
-        })
-
-        axios.get(API_URL+'/course/search/'+this.state.search,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
-            if(res.status === 200)
-            {
-                this.setState({
-                    classes:res.data.data
-                })
-            }
-        })
-
-    }
-
 
     addlist(val)
     {
@@ -577,8 +604,6 @@ export default class searchClass extends Component
             <div>
                 <h2 className="CaresoleCategorie">{this.props.categorie}</h2>
                 <div className="caresoleWrapper">
-                    <input className="search" id="search" onChange={this.handleChange} type="text" placeholder="Search"/>
-
                     <div className="Searchcaresole">
                         {this.getImageElement()}
                     </div>
@@ -593,5 +618,5 @@ export default class searchClass extends Component
                 </Modal>
             </div>
         );
-    }
+      }
 }

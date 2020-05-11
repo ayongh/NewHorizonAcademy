@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 
 import {buttonCheck} from 'react-icons-kit/metrize/buttonCheck'
 import {buttonAdd} from 'react-icons-kit/metrize/buttonAdd'
-import {buttonClose} from 'react-icons-kit/metrize/buttonClose'
+import {cross} from 'react-icons-kit/metrize/cross'
 import { Icon } from 'react-icons-kit'
 
 import axios from 'axios'
@@ -17,7 +17,12 @@ export default class caresole extends Component
 
         this.state = {
             open: false,
-            classes:null,
+            Popularclasses:null,
+            newlyaddedclasses:null,
+            healthclasses:null,
+            educationclasses:null,
+            watchHistoryclasses:null,
+            
             class:null,
 
             likeFunction:null,
@@ -61,20 +66,8 @@ export default class caresole extends Component
                 })
             }
         })
-    }
-    
-    componentDidMount()
-    {
-        axios.get(API_URL+'/course/all',{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
-            if(res.status === 200)
-            {
-                this.setState({
-                    classes:res.data.classes
-                })
-            }
-        })
 
-        axios.get(API_URL+'/course/listrating', { validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+        axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
             if(res.status === 200)
             {
                 this.setState({
@@ -84,75 +77,72 @@ export default class caresole extends Component
 
         }) 
     }
-
-    RenderLikeButton(val)
+    
+    componentDidMount()
     {
-        var found = false;
-
-        if(this.state.ratingList != null)
-        {
-            this.state.ratingList.forEach(element => {
-                if(element.classID === val._id)
-                {
-                    if(element.rating > 0)
-                    {
-                        found=true
-                    }
-                }
-            });
+        var popularpayload= {
+            pagination: 20
         }
-
-        var liked = "liked"+val._id
-        var like = "like"+val._id
-
-        if(found=== true)
-        {
-            if(document.getElementById(liked) != null)
+        axios.post(API_URL+'/render/class/popular',popularpayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+            if(res.status === 200)
             {
-                document.getElementById(liked).style.display="flex"
-                document.getElementById(like).style.display="none"
-
+                this.setState({
+                    Popularclasses:res.data
+                })
             }
+        })
+
+        var newlyaddedpayload= {
+            pagination: 20
         }
-        else
-        {
-            if(document.getElementById(like) != null)
+        axios.post(API_URL+'/render/class/newlyadded',newlyaddedpayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+            if(res.status === 200)
             {
-                document.getElementById(like).style.display="flex"
-                document.getElementById(liked).style.display="none"
-
+                this.setState({
+                    newlyaddedclasses:res.data
+                })
             }
-        }
+        })
 
+        var watchHistorypayload= {
+            pagination: 20
+        }
+        axios.post(API_URL+'/render/class/watchHistory',watchHistorypayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+            if(res.status === 200)
+            {
+                this.setState({
+                    watchHistoryclasses:res.data.classes
+                })
+            }
+        })
+
+        var healthpayload= {
+            categorie:"Health",
+            pagination: 20
+        }
+        axios.post(API_URL+'/render/class/categorie',healthpayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+            if(res.status === 200)
+            {
+                this.setState({
+                    healthclasses:res.data
+                })
+            }
+        })
+
+        var educationpayload= {
+            categorie:"education",
+            pagination: 20
+        }
+        axios.post(API_URL+'/render/class/categorie',educationpayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+            console.log(res)
+            if(res.status === 200)
+            {
+                this.setState({
+                    educationclasses:res.data
+                })
+            }
+        })
     }
-
-    RenderdisLikeButton(val)
-    {
-        var found = false;
-
-        if(this.state.ratingList != null)
-        {
-            this.state.ratingList.forEach(element => {
-                if(element.classID === val._id)
-                {
-                    if(element.rating < 0)
-                    {
-                        found=true
-                    }
-                }
-            });
-        }
-
-        if(found=== true)
-        {
-            return  <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} style={{color:"red"}} onClick={() =>this.disLikeAction(val._id)}></Icon>
-        }
-        else
-        {
-            return  <Icon className="popup_movie_btn" id={"dislike"+val._id} size={40} icon={buttonClose} onClick={() =>this.disLikeAction(val._id)}></Icon>
-        }    
-    }
-
 
     onCloseModal = () => {
         this.setState({ open: false});
@@ -178,26 +168,31 @@ export default class caresole extends Component
         }
     }
 
-    getImageElement()
+    getHealthImageElement()
     {
-        const Classes = this.state.classes
+        const Classes = this.state.healthclasses
         var classesElement
 
        
         if (Classes !== null)
         {
             classesElement = Classes.map( (val, index) => {
+                var newTag= val.tag.replace(",", " #")
                 return (
-                    <div key= {val._id} className="contentWraper">
+                    <div key= {val._id} className="new_contentWraper">
                         <img className="caresoleImage" id={val._id} onError={this.errorImag} src={val.thumbnail} alt={'apple'}/>
-                        <div className="caresoleImage_description">
-                            <h3>{val.name}</h3>
-                            <p>{val.description}</p>
-                            <div className="popup_action">
-                                <Icon className="popup_movie_btn" id={"liked"+val._id} size={40} style={{color:"green", display:"none"}} icon={buttonCheck} onClick={() =>this.removeLikeAction(val._id)} ></Icon>
-                                <Icon className="popup_movie_btn" id={"like"+val._id} size={40} style={{display:"none"}} icon={buttonCheck} onClick={() =>this.LikeAction(val._id)} ></Icon>  
-                                {this.RenderLikeButton(val)}
-                                <Icon className="popup_movie_btn" id={"add"+val._id} size={40} icon={buttonAdd} onClick={()=>this.open(val)}></Icon>
+                        <div className="caresoleImage_description_wrapper">
+                            <div className="top_caresoleImage_description">
+                                <ion-icon name="caret-forward-circle-outline" style={{fontSize:"70px", color:'white', marginTop:"20%", cursor:"pointer"}} onClick={()=>this.open(val)}></ion-icon>
+                            </div>                            
+                            <div className="description">
+                                <div className="bottom_caresoleImage_description">
+                                    <h3 className="caresole_title">{val.name}</h3>
+                                    <div className="tag_wrapper">
+                                        <i><p className="tag">#{newTag}</p></i>
+                                    </div>
+                                    <p>{val.description}</p>
+                                </div>
                             </div>
                         </div>      
                     </div>  
@@ -206,6 +201,167 @@ export default class caresole extends Component
         }
 
         return classesElement;
+    }
+
+    getnewlyaddedImageElement()
+    {
+        const Classes = this.state.newlyaddedclasses
+        var classesElement
+
+       
+        if (Classes !== null)
+        {
+            classesElement = Classes.map( (val, index) => {
+                var newTag= val.tag.replace(",", " #")
+                return (
+                    <div key= {val._id} className="new_contentWraper">
+                        <img className="caresoleImage" id={val._id} onError={this.errorImag} src={val.thumbnail} alt={'apple'}/>
+                        <div className="caresoleImage_description_wrapper">
+                            <div className="top_caresoleImage_description">
+                                <ion-icon name="caret-forward-circle-outline" style={{fontSize:"70px", color:'white', marginTop:"20%", cursor:"pointer"}} onClick={()=>this.open(val)}></ion-icon>
+                            </div>                            
+                            <div className="description">
+                                <div className="bottom_caresoleImage_description">
+                                    <h3 className="caresole_title">{val.name}</h3>
+                                    <div className="tag_wrapper">
+                                        <i><p className="tag">#{newTag}</p></i>
+                                    </div>
+                                    <p>{val.description}</p>
+                                </div>
+                            </div>
+                        </div>      
+                    </div>  
+                )
+            }) 
+        }
+
+        return classesElement;
+    }
+    
+    getPopluarImageElement()
+    {
+        const Classes = this.state.Popularclasses
+        var classesElement
+
+       
+        if (Classes !== null)
+        {
+            classesElement = Classes.map( (val, index) => {
+                var newTag= val.tag.replace(",", " #")
+                return (
+                    <div key= {val._id} className="new_contentWraper">
+                        <img className="caresoleImage" id={val._id} onError={this.errorImag} src={val.thumbnail} alt={'apple'}/>
+                        <div className="caresoleImage_description_wrapper">
+                            <div className="top_caresoleImage_description">
+                                <ion-icon name="caret-forward-circle-outline" style={{fontSize:"70px", color:'white', marginTop:"20%", cursor:"pointer"}} onClick={()=>this.open(val)}></ion-icon>
+                            </div>                            
+                            <div className="description">
+                                <div className="bottom_caresoleImage_description">
+                                    <h3 className="caresole_title">{val.name}</h3>
+                                    <div className="tag_wrapper">
+                                        <i><p className="tag">#{newTag}</p></i>
+                                    </div>
+                                    <p>{val.description}</p>
+                                </div>
+                            </div>
+                        </div>      
+                    </div>  
+                )
+            }) 
+        }
+
+        return classesElement;
+    }
+
+    getEducationImageElement()
+    {
+        const Classes = this.state.educationclasses
+        var classesElement
+
+       
+        if (Classes !== null)
+        {
+            classesElement = Classes.map( (val, index) => {
+                var newTag= val.tag.replace(",", " #")
+                return (
+                    <div key= {val._id} className="new_contentWraper">
+                        <img className="caresoleImage" id={val._id} onError={this.errorImag} src={val.thumbnail} alt={'apple'}/>
+                        <div className="caresoleImage_description_wrapper">
+                            <div className="top_caresoleImage_description">
+                                <ion-icon name="caret-forward-circle-outline" style={{fontSize:"70px", color:'white', marginTop:"20%", cursor:"pointer"}} onClick={()=>this.open(val)}></ion-icon>
+                            </div>                            
+                            <div className="description">
+                                <div className="bottom_caresoleImage_description">
+                                    <h3 className="caresole_title">{val.name}</h3>
+                                    <div className="tag_wrapper">
+                                        <i><p className="tag">#{newTag}</p></i>
+                                    </div>
+                                    <p>{val.description}</p>
+                                </div>
+                            </div>
+                        </div>      
+                    </div>  
+                )
+            }) 
+        }
+
+        return classesElement;
+    }
+
+    getWatchHistoryImageElement()
+    {
+        const Classes = this.state.watchHistoryclasses
+        var classesElement
+
+       
+        if (Classes !== null)
+        {
+            classesElement = Classes.map( (val, index) => {
+                var newTag= val.tag.replace(",", " #")
+                return (
+                    <div key= {val._id} className="new_contentWraper">
+                        <img className="caresoleImage" id={val._id} onError={this.errorImag} src={val.thumbnail} alt={'apple'}/>
+                        <div className="caresoleImage_description_wrapper">
+                            <div className="top_caresoleImage_description">
+                                <ion-icon name="caret-forward-circle-outline" style={{fontSize:"70px", color:'white', marginTop:"20%", cursor:"pointer"}} onClick={()=>this.open(val)}></ion-icon>
+                            </div>                            
+                            <div className="description">
+                                <div className="bottom_caresoleImage_description">
+                                    <h3 className="caresole_title">{val.name}</h3>
+                                    <div className="tag_wrapper">
+                                        <i><p className="tag">#{newTag}</p></i>
+                                    </div>
+                                    <p>{val.description}</p>
+                                </div>
+                            </div>
+                        </div>      
+                    </div>  
+                )
+            }) 
+        }
+
+        return classesElement;
+    }
+
+    getWatchHistory()
+    {
+        if(this.state.watchHistoryclasses !== null)
+        {
+            if(this.state.watchHistoryclasses.length >2)
+            {
+                return(
+                    <div className="watchHistory_wrapper">
+                        <h2 className="CaresoleCategorie">Watch History</h2>
+                        <div className="caresoleWrapper">
+                            <div className="caresole dragscroll">
+                                {this.getWatchHistoryImageElement()}
+                            </div>
+                        </div>
+                    </div>
+                )  
+            }
+        }
+         
     }
 
     similarMovieBotton(value)
@@ -239,6 +395,16 @@ export default class caresole extends Component
                 })
             }
         })
+
+        axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {
+                this.setState({
+                    ratingList:res.data.message
+                })
+            }
+
+        }) 
     }
 
     getSimilarclass()
@@ -264,23 +430,208 @@ export default class caresole extends Component
         
     }
 
+    RenderLikeButton(val)
+    {
+
+        if(this.state.ratingList !== null)
+        {
+            var liked = "liked"+val._id
+            var like = "like"+val._id
+
+            var found =false;
+            this.state.ratingList.map(element=>{
+                if(element.classID === val._id)
+                {
+                   found = true
+
+                }
+            })
+
+            if(found=== true)
+            {
+                if(document.getElementById(liked) != null)
+                {
+                    document.getElementById(liked).style.display="flex"
+                    document.getElementById(like).style.display="none"
+
+                }
+            }
+            else
+            {
+                if(document.getElementById(like) != null)
+                {
+                    document.getElementById(like).style.display="flex"
+                    document.getElementById(liked).style.display="none"
+
+                }
+            }
+        }        
+    }
+
+    Renderwatchlistbutton(val)
+    {
+        if(this.state.watchHistoryclasses !== null)
+        {
+            var add = "add"+val._id
+            var remove = "remove"+val._id
+
+            var found =false;
+            this.state.watchHistoryclasses.map(element=>{
+                if(element._id === val._id)
+                {
+                   found = true
+                }
+            })
+
+            if(found=== true)
+            {
+                if(document.getElementById(remove) != null)
+                {
+                    document.getElementById(add).style.display="none"
+                    document.getElementById(remove).style.display="flex"
+
+                }
+            }
+            else
+            {
+                if(document.getElementById(add) != null)
+                {
+                    document.getElementById(add).style.display="flex"
+                    document.getElementById(remove).style.display="none"
+
+                }
+            }
+            
+        }  
+    }
+
     removeLikeAction(classID)
     {
         var payload= {
             classID: classID
         }
-        
-        var like = "like"+classID
-        var liked = "liked"+classID
+
+        var liked = "liked"+classID._id
+        var like = "like"+classID._id
 
         axios.post(API_URL+'/course/like/remove', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
             if(res.status === 200)
             {  
-                document.getElementById(liked).style.display = "none"
-                document.getElementById(like).style.display = "flex"
+                
+                document.getElementById(like).style.display="flex"
+                document.getElementById(liked).style.display="none"             
+                document.getElementById("message").innerHTML = "Class sucessfully disliked"
+                document.getElementById('notification').style.display="flex"
+                setTimeout(function(){ 
+                    document.getElementById('notification').style.display="none"
+        
+                }, 3000);
             }
     
         }) 
+    }
+
+    LikeAction( classID)
+    {
+        var payload= {
+            classID: classID
+        }
+
+        var liked = "liked"+classID._id
+        var like = "like"+classID._id
+        axios.post(API_URL+'/course/like', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {  
+                
+                document.getElementById(liked).style.display="flex"
+                document.getElementById(like).style.display="none"
+                document.getElementById("message").innerHTML = "Sucessfully liked a class"
+                document.getElementById('notification').style.display="flex"
+                setTimeout(function(){ 
+                    document.getElementById('notification').style.display="none"
+                }, 3000);
+            }
+    
+        }) 
+    }
+
+    addlist(val)
+    {
+        
+        var data={
+            classID:val._id
+        }
+
+        var add = "add"+val._id
+        var remove = "remove"+val._id
+
+        axios.post(API_URL+"/user/info/update/watchLater",data,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {
+                if(document.getElementById(remove) != null)
+                {
+                    document.getElementById(add).style.display="none"
+                    document.getElementById(remove).style.display="flex"
+
+                }
+                document.getElementById("message").innerHTML = "Class sucessfully add to the Watch List"
+                document.getElementById('notification').style.display="flex"
+                setTimeout(function(){ 
+                    document.getElementById('notification').style.display="none"
+                }, 3000);
+
+                var watchHistorypayload= {
+                    pagination: 20
+                }
+                axios.post(API_URL+'/render/class/watchHistory',watchHistorypayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            watchHistoryclasses:res.data.classes
+                        })
+                    }
+                })
+            }
+        })
+    }
+
+    removeList(val)
+    {
+        var data={
+            classID:val._id
+        }
+
+        var add = "add"+val._id
+        var remove = "remove"+val._id
+
+        axios.post(API_URL+"/user/info/update/watchLater/remove",data,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {
+                if(document.getElementById(add) != null)
+                {
+                    document.getElementById(add).style.display="flex"
+                    document.getElementById(remove).style.display="none"
+
+                }
+                document.getElementById("message").innerHTML = "Class sucessfully removed from the Watch List"
+                document.getElementById('notification').style.display="flex"
+                setTimeout(function(){ 
+                    document.getElementById('notification').style.display="none"
+                }, 3000);
+
+                var watchHistorypayload= {
+                    pagination: 20
+                }
+                axios.post(API_URL+'/render/class/watchHistory',watchHistorypayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            watchHistoryclasses:res.data.classes
+                        })
+                    }
+                })
+            }
+        })
     }
 
     getModelEpisodes()
@@ -346,51 +697,6 @@ export default class caresole extends Component
         }
     }
 
-    
-    LikeAction( classID)
-    {
-        var payload= {
-            classID: classID
-        }
-        
-        var like = "like"+classID
-        var liked = "liked"+classID
-
-
-        axios.post(API_URL+'/course/like', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
-            if(res.status === 200)
-            {  
-                document.getElementById(liked).style.display = "flex"
-                document.getElementById(like).style.display = "none"
-            }
-    
-        }) 
-    }
-
-    disLikeAction( classID)
-    {
-        var payload= {
-            classID: classID
-        }
-        
-        var likeID = "like"+classID
-        var dislikeID = "dislike"+classID
-
-        axios.post(API_URL+'/course/dislike', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
-            if (res.status === 200)
-            {
-                document.getElementById(likeID).style.color = "white"
-                document.getElementById(dislikeID).style.color = "red"
-            }
-            else{
-                document.getElementById(likeID).style.color = "white"
-                document.getElementById(dislikeID).style.color = "red"
-            }
-    
-        }) 
-    }
-
-    
 
     getModelContent()
     {
@@ -413,7 +719,16 @@ export default class caresole extends Component
                                 <p className="popup_description">
                                     {this.state.class.description}
                                 </p>
-                                
+                                <div className="popup_action">
+                                    <Icon className="popup_movie_btn liked" style={{display:"none"}} id={"liked"+this.state.class._id} size={40} icon={buttonCheck} onClick={() =>this.removeLikeAction(this.state.class)}></Icon>
+                                    <Icon className="popup_movie_btn" id={"like"+this.state.class._id} style={{display:"none"}} size={40} icon={buttonCheck} onClick={() =>this.LikeAction(this.state.class)}></Icon>
+                                    {this.RenderLikeButton(this.state.class)}
+
+                                    <Icon className="popup_movie_btn" id={"add"+this.state.class._id} size={40} icon={buttonAdd} onClick={() =>this.addlist(this.state.class)}></Icon>
+                                    <Icon className="popup_movie_btn" id={"remove"+this.state.class._id}  size={40} icon={cross} onClick={() =>this.removeList(this.state.class)}></Icon>
+                                    {this.Renderwatchlistbutton(this.state.class)}
+
+                                </div>
                                 <div className="popup_content_wraper">
                                     <nav>
                                         <button id="btnSection" onClick={()=>this.changeNav("btnSection")} href="#section">Section <span id="spanSection"></span></button>
@@ -452,11 +767,50 @@ export default class caresole extends Component
         const { open } = this.state;        
         return (
             <div>
-                <h2 className="CaresoleCategorie">{this.props.categorie}</h2>
+                <div className="CaresoleCategorie">
+                    <h2 className="categorie_title">popular</h2>
+                    <a href="/browse/movie/popular"><div className="titleExplore">Explore All</div></a>
+                </div>
                 <div className="caresoleWrapper">
                     <div className="caresole dragscroll">
-                        {this.getImageElement()}
+                        {this.getPopluarImageElement()}
                     </div>
+                </div>
+
+                <div className="CaresoleCategorie">
+                    <h2 className="categorie_title">Newly Added</h2>
+                    <a href="/browse/movie/newlyadded"><div className="titleExplore">Explore All</div></a>
+                </div>
+                <div className="caresoleWrapper">
+                    <div className="caresole dragscroll">
+                        {this.getnewlyaddedImageElement()}
+                    </div>
+                </div>
+
+                {this.getWatchHistory()}
+
+                <div className="CaresoleCategorie">
+                    <h2 className="categorie_title">Health</h2>
+                    <a href="/browse/movie/Health"><div className="titleExplore">Explore All</div></a>
+                </div>
+                <div className="caresoleWrapper">
+                    <div className="caresole dragscroll">
+                        {this.getHealthImageElement()}
+                    </div>
+                </div>
+
+                <div className="CaresoleCategorie">
+                    <h2 className="categorie_title">Education</h2>
+                    <a href="/browse/movie/education"><div className="titleExplore">Explore All</div></a>
+                </div>
+                <div className="caresoleWrapper">
+                    <div className="caresole dragscroll">
+                        {this.getEducationImageElement()}
+                    </div>
+                </div>
+
+                <div className="addedlistAlert" id="notification">
+                    <p id="message">Sucessfully added to watch Later list</p>
                 </div>
 
                 <Modal open={open} onClose={this.onCloseModal} center style={{color:"white", width:"90vw",height:"80vh"}}>

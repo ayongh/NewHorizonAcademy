@@ -278,6 +278,7 @@ export default class searchClass extends Component
                 {
                    found = true
                 }
+                return found
             })
 
             if(found=== true)
@@ -380,6 +381,28 @@ export default class searchClass extends Component
             {
                 this.setState({
                     recomendationSimilar:res.data.message
+                })
+            }
+        })
+
+        axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {
+                this.setState({
+                    ratingList:res.data.message
+                })
+            }
+
+        }) 
+
+        var watchHistorypayload= {
+            pagination: 20
+        }
+        axios.post(API_URL+'/render/class/watchHistory',watchHistorypayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+            if(res.status === 200)
+            {
+                this.setState({
+                    watchHistoryclasses:res.data.classes
                 })
             }
         })

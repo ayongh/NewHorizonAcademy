@@ -36,7 +36,7 @@ import Update_Username from './Component/update_username'
 import Update_Email from './Component/updateProfileEmail'
 import Update_Email_Validation from './Component/updateEmailConfirmation'
 import Video from './Component/video'
-
+import Upload from './Component/upload'
 
 //protected
 const ProtectedRoute = ({ component: Comp, loggedIn,validlogin, path, ...rest }) => {
@@ -96,6 +96,7 @@ class App extends Component
             <ProtectedRoute exact path="/browse/movie/:categorie" loggedIn={this.props.state.login.loginFlag} component={AllBrowseContent}/>
             <ProtectedRoute exact path="/search/movie" loggedIn={this.props.state.login.loginFlag} component={SearchClass}/>
             <ProtectedRoute exact path="/Homepage" loggedIn={this.props.state.login.loginFlag} component={SearchHome}/>
+            <ProtectedRoute exact path="/upload" loggedIn={this.props.state.login.loginFlag} component={Upload}/>
             <ProtectedRoute exact path="/profile" loggedIn={this.props.state.login.loginFlag} component={UserProfile}/>
             <ProtectedRoute exact path="/profile/username" loggedIn={this.props.state.login.loginFlag} component={Update_Username}/>
             <ProtectedRoute exact path="/profile/email" loggedIn={this.props.state.login.loginFlag} component={Update_Email}/>

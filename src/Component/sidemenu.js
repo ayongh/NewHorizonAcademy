@@ -23,10 +23,26 @@ class sidemenu extends React.Component {
     };
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
- 
-  onSetSidebarOpen(open) {
 
-    this.setState({ sidebarOpen: open });
+  onSetSidebarOpen() {
+    if(this.state.sidebarOpen === true)
+    {
+      if(document.getElementById('sideMenuBtn') !== null)
+      {
+        document.getElementById('sideMenuBtn').style.zIndex = 0
+        document.getElementById('sideMenuBtn').style.display = 'block'
+      }
+      this.setState({ sidebarOpen: false });
+    }
+    else
+    {
+      if(document.getElementById('sideMenuBtn') !== null)
+      {
+        document.getElementById('sideMenuBtn').style.display = 'none'
+      }
+      this.setState({ sidebarOpen: true });
+    }
+
   }
 
   logout()
@@ -101,7 +117,7 @@ class sidemenu extends React.Component {
         onSetOpen={this.onSetSidebarOpen}
         styles={{ sidebar: {background: "white", padding:"50px", width:"auto",vzIndex:10001,height:"100%" } }}
       >
-        <button className="float_btn" onClick={() => this.onSetSidebarOpen(true)}>
+        <button id="sideMenuBtn" className="float_btn" onClick={() => this.onSetSidebarOpen()}>
           <Icon size={30} className="MenuIcon" icon={ic_sort}/>
         </button>
 

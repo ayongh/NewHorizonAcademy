@@ -322,6 +322,7 @@ export default class allBrowseContent extends Component
                 {
                    found = true
                 }
+                return found
             })
 
             if(found=== true)

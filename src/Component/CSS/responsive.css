@@ -8,6 +8,7 @@
     {
         width: 100%;
     }
+    
     .login_left_outer_container {
         width: 90%;
         margin-left: 5%;
@@ -18,6 +19,12 @@
     {
         width: 100%;
     }
+
+    .navbar_menu
+    {
+        text-align: center;
+    }
+
 
     .login_right_outer_container
     {

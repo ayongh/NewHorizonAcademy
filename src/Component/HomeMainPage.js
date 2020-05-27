@@ -158,6 +158,28 @@ export default class HomeMainPage extends Component
             }
         })
 
+        var watchHistorypayload= {
+            pagination: 20
+        }
+        axios.post(API_URL+'/render/class/watchHistory',watchHistorypayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+            if(res.status === 200)
+            {
+                this.setState({
+                    watchHistoryclasses:res.data.classes
+                })
+            }
+        })
+
+        axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {
+                this.setState({
+                    ratingList:res.data.message
+                })
+            }
+
+        }) 
+
         
     }
 
@@ -172,7 +194,7 @@ export default class HomeMainPage extends Component
                 return (
                     <div key= {val._id} className="contentWraper_episode_content">
                         <Link to={{pathname:"/watch/" + val._id, state:{classID: this.state.class._id, prevPath: "/Homepage"}}} className="episode_link">
-                            <img id={"image"+val._id} className="caresoleImage_episode" onLoad={this.imageload("image"+val._id)} src={val.thumbnail} alt={'apple'}/>
+                            <img id={"image"+val._id} className="caresoleImage_episode" src={val.thumbnail} alt={'apple'}/>
                         </Link>
 
                         <div className="caresole_episode_desc">
@@ -231,6 +253,7 @@ export default class HomeMainPage extends Component
                 {
                    found = true
                 }
+                return found
             })
 
             if(found=== true)
@@ -381,6 +404,16 @@ export default class HomeMainPage extends Component
             }
     
         }) 
+
+        axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {
+                this.setState({
+                    ratingList:res.data.message
+                })
+            }
+
+        }) 
     }
 
     removeLikeAction(classID)
@@ -405,6 +438,16 @@ export default class HomeMainPage extends Component
                 }, 3000);
             }
     
+        }) 
+
+        axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+            if(res.status === 200)
+            {
+                this.setState({
+                    ratingList:res.data.message
+                })
+            }
+
         }) 
     }
 
@@ -444,6 +487,16 @@ export default class HomeMainPage extends Component
                         })
                     }
                 })
+
+                axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            ratingList:res.data.message
+                        })
+                    }
+        
+                }) 
             }
         })
     }
@@ -483,6 +536,16 @@ export default class HomeMainPage extends Component
                         })
                     }
                 })
+
+                axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            ratingList:res.data.message
+                        })
+                    }
+        
+                }) 
             }
         })
     }
@@ -513,7 +576,7 @@ export default class HomeMainPage extends Component
                         </div>
 
                         <div className="popup_content_wraper">
-                            <nav style={{textAlign:"center"}}>
+                            <nav className="navbar_menu">
                                 <button id="btnSection" onClick={()=>this.changeNav("btnSection")} href="#section">Section <span id="spanSection"></span></button>
                                 <button id="btnSimilar" onClick={()=>this.changeNav("btnSimilar")} href="#similar">Similar Classes <span id="spanSimilar"></span></button>
                             </nav>

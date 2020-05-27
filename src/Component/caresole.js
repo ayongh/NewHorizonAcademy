@@ -405,6 +405,18 @@ export default class caresole extends Component
             }
 
         }) 
+
+        var watchHistorypayload= {
+            pagination: 20
+        }
+        axios.post(API_URL+'/render/class/watchHistory',watchHistorypayload,{withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>{ 
+            if(res.status === 200)
+            {
+                this.setState({
+                    watchHistoryclasses:res.data.classes
+                })
+            }
+        })
     }
 
     getSimilarclass()
@@ -445,6 +457,7 @@ export default class caresole extends Component
                    found = true
 
                 }
+                return found
             })
 
             if(found=== true)
@@ -481,6 +494,7 @@ export default class caresole extends Component
                 {
                    found = true
                 }
+                return found
             })
 
             if(found=== true)
@@ -526,6 +540,16 @@ export default class caresole extends Component
                     document.getElementById('notification').style.display="none"
         
                 }, 3000);
+
+                axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            ratingList:res.data.message
+                        })
+                    }
+        
+                }) 
             }
     
         }) 
@@ -550,6 +574,16 @@ export default class caresole extends Component
                 setTimeout(function(){ 
                     document.getElementById('notification').style.display="none"
                 }, 3000);
+
+                axios.get(API_URL+'/course/listrating', {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( async res =>{
+                    if(res.status === 200)
+                    {
+                        this.setState({
+                            ratingList:res.data.message
+                        })
+                    }
+        
+                }) 
             }
     
         }) 
@@ -769,7 +803,7 @@ export default class caresole extends Component
             <div>
                 <div className="CaresoleCategorie">
                     <h2 className="categorie_title">popular</h2>
-                    <a href="/browse/movie/popular"><div className="titleExplore">Explore All</div></a>
+                    <a href="/browse/movie/popular"><div className="titleExplore">View All</div></a>
                 </div>
                 <div className="caresoleWrapper">
                     <div className="caresole dragscroll">
@@ -779,7 +813,7 @@ export default class caresole extends Component
 
                 <div className="CaresoleCategorie">
                     <h2 className="categorie_title">Newly Added</h2>
-                    <a href="/browse/movie/newlyadded"><div className="titleExplore">Explore All</div></a>
+                    <a href="/browse/movie/newlyadded"><div className="titleExplore">View All</div></a>
                 </div>
                 <div className="caresoleWrapper">
                     <div className="caresole dragscroll">
@@ -791,7 +825,7 @@ export default class caresole extends Component
 
                 <div className="CaresoleCategorie">
                     <h2 className="categorie_title">Health</h2>
-                    <a href="/browse/movie/Health"><div className="titleExplore">Explore All</div></a>
+                    <a href="/browse/movie/Health"><div className="titleExplore">View All</div></a>
                 </div>
                 <div className="caresoleWrapper">
                     <div className="caresole dragscroll">
@@ -801,7 +835,7 @@ export default class caresole extends Component
 
                 <div className="CaresoleCategorie">
                     <h2 className="categorie_title">Education</h2>
-                    <a href="/browse/movie/education"><div className="titleExplore">Explore All</div></a>
+                    <a href="/browse/movie/education"><div className="titleExplore">View All</div></a>
                 </div>
                 <div className="caresoleWrapper">
                     <div className="caresole dragscroll">

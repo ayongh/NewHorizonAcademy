@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Link } from 'react-router-dom'
+import {Link,Redirect  } from 'react-router-dom'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import {API_URL} from '../globalVariable'
@@ -14,7 +14,8 @@ class update_username extends Component
         this.state = {
             firstName:'',              //User First Name
             lastName:'',               //User Last Name
-            error:undefined
+            error:undefined,
+            updatedNameStatus: false
         }
     }
 
@@ -39,21 +40,60 @@ class update_username extends Component
 
                 axios.post(API_URL+'/user/info/update/name', payload, {withCredentials: true, validateStatus: function (status) { return status >= 200 && status < 600; }}).then( res =>
                 {
-                    console.log(res)
                     if(res.status === 200)
                     {
-                        console.log(res.data)
-                        this.props.ActionUserUpdateName(res.data.message)
+                        
+                        if(document.getElementById("message") !== null )
+                        {
+                            this.props.ActionUserUpdateName(res.data.message)
+                            this.setState({
+                                updatedNameStatus:true
+                            })    
+                        }
                     }
                     else
                     {
-                        this.props.ActionUserError(res.data.error)
+                        if(document.getElementById("message") !== null )
+                        {
+                            this.props.ActionUserError(res.data.error)
+                            document.getElementById("message").innerHTML = "Failure to update your Name"
+                            document.getElementById('notification').style.display="flex"
+                            document.getElementById('notification').style.background="red"
+                            setTimeout(function(){ 
+                                document.getElementById('notification').style.display="none"
+                            }, 3000);
+                        }
                     }
                 })     
 
+            }else
+            {
+
+                if(document.getElementById("message") !== null )
+                {
+                    document.getElementById("message").innerHTML = "Please use diffrent name to update"
+                    document.getElementById('notification').style.display="flex"
+                    document.getElementById('notification').style.background="brown"
+                    setTimeout(function(){ 
+                        document.getElementById('notification').style.display="none"
+            
+                    }, 3000);
+                }
             }
         }
         else{
+            
+            if(document.getElementById("message") !== null)
+            {
+                document.getElementById("message").innerHTML = "Name cannot be empty"
+                document.getElementById('notification').style.display="flex"
+                document.getElementById('notification').style.background="brown"
+                setTimeout(function(){ 
+                    document.getElementById('notification').style.display="none"
+        
+                }, 3000);
+            }
+
             this.setState({
                 error:'First or last name cannont be empty'
             })
@@ -68,11 +108,16 @@ class update_username extends Component
         let errorElement;
         if (this.state.error !== undefined)
         {
-        errorElement = <p>{this.state.error}</p>
+            errorElement = <p>{this.state.error}</p>
+        }
+
+        if(this.state.updatedNameStatus === true)
+        {
+           return <Redirect to="/profile"/>
         }
 
         return (
-          <div className="userprofile_main_container">
+            <div className="userprofile_main_container">
                 <div className="user_info_container">
                     <Link to="/profile">Profile</Link>
                   <h3> Update</h3>
@@ -97,7 +142,11 @@ class update_username extends Component
                         </div>
                     </div>
                 </div>
-          </div>
+
+                <div className="addedlistAlert" id="notification">
+                    <p id="message">Sucessfully added to watch Later list</p>
+                </div>
+            </div>
         )
     }
 }

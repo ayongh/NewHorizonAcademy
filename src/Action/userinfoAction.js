@@ -15,7 +15,6 @@ export function ActionUserUpdateName(payload) {
 }
 
 export function ActionUserUpdateEmail(payload) {
-    alert(payload)
     return{
         type:USER_EMAIL,
         payload:payload
